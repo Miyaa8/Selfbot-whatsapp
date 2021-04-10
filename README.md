@@ -30,8 +30,10 @@
 Edit the required value in [`config.json`](https://github.com/Megaa4282/Simple-selfbotwa/blob/master/config.json)
 ```json
 {
-    "owner": "628xxxx",
-    "mods": "628xxxx",
+    "owner": "628xxxxxxx",
+    "mods": [
+      "628xxxxxxx"
+     ],
     "public": false
 }
 ```
