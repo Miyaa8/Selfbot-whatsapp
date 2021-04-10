@@ -325,39 +325,103 @@ Usage : ${prefix}fordward yourtext
 
 36. *${prefix}fakereply*
 Make a fakereply message
-Usage : ${prefix}fakereply 62xxx | targetmessage | yourmessage`
+Usage : ${prefix}fakereply 62xxx | targetmessage | yourmessage
+
+37. *${prefix}unreadall*
+Unread all message
+
+38. *${prefix}readall*
+Read all message
+
+39. *${prefix}upstorypic*
+Send picture or image to status whatsapp
+Usage : send image and reply with your caption, ${prefix}upstorypic halo
+
+40. *${prefix}upstoryvid*
+Send video to status whatsapp
+Usage : send video and reply with your caption, ${prefix}upstoryvid halo
+
+41. *${prefix}upstory*
+Send text to status whatsapp
+Usage : ${prefix}upstory Hallo, i'm using bot`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
                 break
+          case 'upstorypic':
+              if (!itsMe) return reply('This command only for mega')
+              var teksyy = body.slice(12)
+              reply('wait')
+              var foto = isQuotedImage ? JSON.parse(JSON.stringify(lin).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lin
+					    var inisiap = await megayaa.downloadAndSaveMediaMessage(foto)
+              var inisiap2 = fs.readFileSync(inisiap)
+              megayaa.sendMessage('status@broadcast', inisiap2, image, {quoted: lin, caption: `${teksyy}`})
+              reply('Succes!')
+                  break
+          case 'upstoryvid':
+              if (!itsMe) return reply('This command only for mega')
+              var teksyy = body.slice(12)
+              reply('wait')
+              var foto = isQuotedVideo ? JSON.parse(JSON.stringify(lin).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lin
+					    var inisiap = await megayaa.downloadAndSaveMediaMessage(foto)
+              var inisiap2 = fs.readFileSync(inisiap)
+              megayaa.sendMessage('status@broadcast', inisiap2, video, {quoted: lin, caption: `${teksyy}`})
+              reply('Succes!')
+                  break
+          case 'upstory':
+            if (!itsMe) return reply('This command only for mega')
+            var teks = body.slice(9)
+            megayaa.sendMessage('status@broadcast', teks, text)
+            reply('succses')
+                break
+          case 'unreadall':
+              if (!itsMe) return reply('This command only for mega')
+              var chats = await megayaa.chats.all()
+              chats.map( async ({ jid }) => {
+              await megayaa.chatRead(jid, 'unread')
+                    })
+			        var teks = `\`\`\`Successfully unread ${chats.length} chats !\`\`\``
+			        await megayaa.sendMessage(from, teks, text, {quoted: lin})
+					    console.log(chats.length)
+			        break
+          case 'readall':
+              if (!itsMe) return reply('This command only for mega')
+              var chats = await megayaa.chats.all()
+              chats.map( async ({ jid }) => {
+              await megayaa.chatRead(jid)
+                    })
+			        var teks = `\`\`\`Successfully read ${chats.length} chats !\`\`\``
+			        await megayaa.sendMessage(from, teks, text, {quoted: lin})
+					    console.log(chats.length)
+			        break
           case 'fakereply':
-				if (!args) return reply(`Usage :\n${prefix}fakereply [62xxx|pesan|balasanbot]]\n\nEx : \n${prefix}fakereply 0|hai|hai juga`)
-				var ghh = budy.slice(11)
-				  var nomorr = ghh.split("|")[0];
-					var target = ghh.split("|")[1];
-					var bot = ghh.split("|")[2];
-			  megayaa.sendMessage(from, `${bot}`, text, {quoted: { key: { fromMe: false, participant: nomorr+'@s.whatsapp.net', ...(from ? { remoteJid: from } : {}) }, message: { conversation: `${target}` }}})
-					break
+			 	      if (!args) return reply(`Usage :\n${prefix}fakereply [62xxx|pesan|balasanbot]]\n\nEx : \n${prefix}fakereply 0|hai|hai juga`)
+		      		var ghh = budy.slice(11)
+		    		  var nomorr = ghh.split("|")[0];
+	    				var target = ghh.split("|")[1];
+		    			var bot = ghh.split("|")[2];
+	      		  megayaa.sendMessage(from, `${bot}`, text, {quoted: { key: { fromMe: false, participant: nomorr+'@s.whatsapp.net', ...(from ? { remoteJid: from } : {}) }, message: { conversation: `${target}` }}})
+			       		break
           case 'fordward':
-	      megayaa.sendMessage(from, `${budy.slice(10)}`, text, {contextInfo: { forwardingScore: 508, isForwarded: true }})
-          break
+	             megayaa.sendMessage(from, `${budy.slice(10)}`, text, {contextInfo: { forwardingScore: 508, isForwarded: true }})
+                 break
           case 'tagall':
-        if (!isAdmin) return reply('only for admin group')
-					members_id = []
-					teks = (args.length > 1) ? budy.slice(8).trim() : ''
-					teks += '\n\n'
-					for (let mem of groupMembers) {
-						teks += `┣➥ @${mem.jid.split('@')[0]}\n`
-						members_id.push(mem.jid)
-					}
-					mentions(teks, members_id, true)
-					break
+              if (!isAdmin) return reply('only for admin group')
+				     	members_id = []
+		    			teks = (args.length > 1) ? budy.slice(8).trim() : ''
+	    				teks += '\n\n'
+	     				for (let mem of groupMembers) {
+		  				teks += `┣➥ @${mem.jid.split('@')[0]}\n`
+		  				members_id.push(mem.jid)
+					    }
+					    mentions(teks, members_id, true)
+					    break
           case 'chat':
-        if (!itsMe) return reply('This command only for lindow')
-          var pc = budy.slice(6)
-          var nomor = pc.split("|")[0];
-          var org = pc.split("|")[1];
-          megayaa.sendMessage(nomor+'@s.whatsapp.net', org, MessageType.text)   
-          reply('done..')
-        break
+              if (!itsMe) return reply('This command only for lindow')
+              var pc = budy.slice(6)
+              var nomor = pc.split("|")[0];
+              var org = pc.split("|")[1];
+              megayaa.sendMessage(nomor+'@s.whatsapp.net', org, MessageType.text)   
+              reply('done..')
+                  break
           case 'setpp':
              if (!itsMe) return reply('This command only for lindow')
 			      	megayaa.updatePresence(from, Presence.composing) 
