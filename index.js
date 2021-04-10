@@ -52,6 +52,15 @@ fakeimage = fs.readFileSync(`./lib/image/foto2.jpg`)
 fake = 'Simple Selfbot'
 prefix = 'z'
 
+
+megayaa.on('CB:action,,call', async json => {
+    const callerId = json[2][0][1].from;
+    console.log(json)
+        megayaa.sendMessage(callerId, "Auto block system, don't call please", MessageType.text)
+        await sleep(4000)
+        await megayaa.blockUser(callerId, "add") // Block user
+})
+
 megayaa.on('group-participants-update', async(chat) => {
     try {
         var member = chat.participants
@@ -722,6 +731,25 @@ Usage : send sticker and reply ${prefix}colong`
             megayaa.modifyChat(from, ChatModification.unmute)
             reply('*succes unmute this chat*')
             console.log('succes unmute chat = ' + from)
+            break
+          case 'ytsearch':
+            ytsr = require('ytsr')
+            if (!args.length) return reply('input title!')
+            try {
+                const input = args.join(" ")
+                const filter1 = await ytsr.getFilters(input)
+                const filters1 = filter1.get('Type').get('Video')
+                const { items } = await ytsr(filters1.url, { limit: 10 })
+                let hehe = `*YOUTUBE SEARCH*\n\n*Search Query:* ${input}\n`
+                for (let i = 0; i < items.length; i++) {
+                    hehe += `\n\n=====================\n\n*Judul:* ${items[i].title}\n\n*ID:* ${items[i].id}\n\n*Viewers:* ${items[i].views}\n\n*Duration:* ${items[i].duration}\n\n*Link:* ${items[i].url}\n`
+                }
+                thumb = await getBuffer(items[0].bestThumbnail.url)
+                await megayaa.sendMessage(from, thumb, image, {quoted: lin, caption: `${hehe}\n\nDownload:\n${prefix}ytmp3 [link youtube] = Audio\n${prefix}ytmp4 [link youtube] = Video`})
+            } catch(e) {
+                reply('Didn\'t find anything or there is any error!')
+                reply(`Error: ${e.message}`)
+            }
             break
           case 'upstorypic':
               if (!itsMe) return reply('This command only for mega')

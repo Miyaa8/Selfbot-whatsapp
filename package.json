@@ -13,7 +13,8 @@
         "performance-now": "^2.1.0",
         "node-fetch": "^2.6.1",
         "image-to-base64": "^2.1.1",
-        "moment-timezone": "^0.5.33"
+        "moment-timezone": "^0.5.33",
+        "ytsr": "^3.3.1"
     },
     "devDependencies": {},
     "scripts": {
