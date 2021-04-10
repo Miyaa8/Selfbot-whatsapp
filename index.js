@@ -22,10 +22,13 @@ const speed = require('performance-now');
 const chalk = require('chalk')
 const fs = require("fs")
 const { exec } = require('child_process');
+const ffmpeg = require('fluent-ffmpeg');
 
 const conn = require("./lib/connect")
 const msg = require("./lib/message")
 const wa = require("./lib/wa")
+const Exif = require('./lib/exif');
+const exif = new Exif();
 const { recognize } = require('./lib/ocr');
 const help = require("./lib/help")
 const postBuffer = help.postBuffer
@@ -136,23 +139,23 @@ megayaa.on('chat-update', async(lin) => {
         const mentions = (teks, memberr, id) => {
 				(id == null || id == undefined || id == false) ? megayaa.sendMessage(from, teks.trim(), extendedText, {contextInfo: {"mentionedJid": memberr}}) : megayaa.sendMessage(from, teks.trim(), extendedText, {quoted: lin, contextInfo: {"mentionedJid": memberr}})
 	    	}
-      // Ucapan Waktu
-      const hour_now = moment().format('HH')
-      var ucapanWaktu = 'Pagi lindow'
-      if (hour_now >= '03' && hour_now <= '10') {
-       ucapanWaktu = 'Pagi lindow'
-      } else if (hour_now >= '10' && hour_now <= '14') {
-       ucapanWaktu = 'Siang lindow'
-      } else if (hour_now >= '14' && hour_now <= '17') {
-        ucapanWaktu = 'Soree lindow'
-      } else if (hour_now >= '17' && hour_now <= '18') {
-        ucapanWaktu = 'Selamat petang'
-      } else if (hour_now >= '18' && hour_now <= '23') {
-        ucapanWaktu = 'Malam lindow'
-      } else {
-        ucapanWaktu = 'Selamat Malam!'
-      }
-
+	    	
+        // Ucapan Waktu
+        const hour_now = moment().format('HH')
+        var ucapanWaktu = 'Pagi lindow'
+        if (hour_now >= '03' && hour_now <= '10') {
+          ucapanWaktu = 'Pagi lindow'
+        } else if (hour_now >= '10' && hour_now <= '14') {
+          ucapanWaktu = 'Siang lindow'
+        } else if (hour_now >= '14' && hour_now <= '17') {
+          ucapanWaktu = 'Soree lindow'
+        } else if (hour_now >= '17' && hour_now <= '18') {
+          ucapanWaktu = 'Selamat petang'
+        } else if (hour_now >= '18' && hour_now <= '23') {
+          ucapanWaktu = 'Malam lindow'
+        } else {
+          ucapanWaktu = 'Selamat Malam!'
+        }
         const isImage = type == 'imageMessage'
         const isVideo = type == 'videoMessage'
         const isAudio = type == 'audioMessage'
@@ -401,11 +404,187 @@ Usage : reply image with caption ${prefix}fdeface https://github.com|Title|decs
 Get profile picture member
 Usage : ${prefix}getpic @tag
 
-21. *${prefix}getbio*
+58. *${prefix}getbio*
 Get bio whatsapp member
-Usage : ${prefix}getbio @tag`
+Usage : ${prefix}getbio @tag
+
+59. *${prefix}sticker*
+Make a photo or video to sticker
+Usage : send image and reply ${prefix}sticker
+
+60. *${prefix}swm* name | author
+Make sticker with costum wm
+Usage : send image or video and reply ${prefix}swm yourname | author
+
+61. *${prefix}takestick* name | author
+Change wm on sticker
+Usage : send sticker and reply ${prefix}takestick yourname | author
+
+62. *${prefix}colong* <reply stiker>
+Change wm on sticker
+Usage : send sticker and reply ${prefix}colong`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
                 break
+          case 'exif':
+			        if (!itsMe) return reply('This command only for lindow')
+			      	if (args.length < 1) return reply(`Penggunaan ${prefix}exif nama|autho`)
+				      if (!arg.split('|')) return reply(`Penggunaan ${prefix}exif nama|author`)
+				      exif.create(arg.split('|')[0], arg.split('|')[1])
+				      reply('sukses')
+			 	      break
+          case 'takestick':
+			      if (!isQuotedSticker) return reply(`Reply sticker dengan caption *${prefix}takestick nama|author*`)
+				    const pembawm = body.slice(11)
+				    if (!pembawm.includes('|')) return reply(`Reply sticker dengan caption *${prefix}takestick nama|author*`)
+				   const encmedia = JSON.parse(JSON.stringify(lin).replace('quotedM','m')).message.extendedTextMessage.contextInfo
+				   const media = await megayaa.downloadAndSaveMediaMessage(encmedia, `./sticker/${sender}`)
+				   const packname = pembawm.split('|')[0]
+				   const author = pembawm.split('|')[1]
+				   exif.create(packname, author, `takestick_${sender}`)
+				   exec(`webpmux -set exif ./sticker/takestick_${sender}.exif ./sticker/${sender}.webp -o ./sticker/${sender}.webp`, async (error) => {
+					   if (error) return reply('error')
+					 wa.sendSticker(from, fs.readFileSync(`./sticker/${sender}.webp`), lin)
+					 fs.unlinkSync(media)
+					 fs.unlinkSync(`./sticker/takestick_${sender}.exif`)
+				   })
+				   break
+			  case 'colong':
+				   if (!isQuotedSticker) return reply(`Reply sticker dengan caption *${prefix}colong*`)
+				  const encmediia = JSON.parse(JSON.stringify(lin).replace('quotedM','m')).message.extendedTextMessage.contextInfo
+				  const meidia = await megayaa.downloadAndSaveMediaMessage(encmediia, `./sticker/${sender}`)
+				  exec(`webpmux -set exif ./sticker/data.exif ./sticker/${sender}.webp -o ./sticker/${sender}.webp`, async (error) => {
+					if (error) return reply('error')
+					wa.sendSticker(from, fs.readFileSync(`./sticker/${sender}.webp`), lin)
+					fs.unlinkSync(meidia)
+			   	})
+				  break
+          case 'swm':
+			    case 'stickerwm':
+				    if (isMedia && !lin.message.videoMessage || isQuotedImage) {
+					  if (!arg.includes('|')) return reply(`Kirim gambar atau reply gambar dengan caption *${prefix}stickerwm nama|author*`)
+					  const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(lin).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lin
+				  	const media = await megayaa.downloadAndSaveMediaMessage(encmedia, `./sticker/${sender}`)
+					  const packname1 = arg.split('|')[0]
+					  const author1 = arg.split('|')[1]
+					  exif.create(packname1, author1, `stickwm_${sender}`)
+					  await ffmpeg(`${media}`)
+							.input(media)
+							.on('start', function (cmd) {
+								console.log(`Started : ${cmd}`)
+							})
+							.on('error', function (err) {
+								console.log(`Error : ${err}`)
+								fs.unlinkSync(media)
+								reply('error')
+							})
+							.on('end', function () {
+								console.log('Finish')
+								exec(`webpmux -set exif ./sticker/stickwm_${sender}.exif ./sticker/${sender}.webp -o ./sticker/${sender}.webp`, async (error) => {
+									if (error) return reply('error')
+									wa.sendSticker(from, fs.readFileSync(`./sticker/${sender}.webp`), lin)
+									fs.unlinkSync(media)	
+									fs.unlinkSync(`./sticker/${sender}.webp`)	
+									fs.unlinkSync(`./sticker/stickwm_${sender}.exif`)
+								})
+							})
+							.addOutputOptions([`-vcodec`,`libwebp`,`-vf`,`scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
+							.toFormat('webp')
+							.save(`./sticker/${sender}.webp`)
+				} else if ((isMedia && lin.message.videoMessage.fileLength < 10000000 || isQuotedVideo && lin.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.fileLength < 10000000)) {
+					if (!arg.includes('|')) return reply(`Kirim gambar atau reply gambar dengan caption *${prefix}stickerwm nama|author*`)
+					const encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(lin).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lin
+					const media = await megayaa.downloadAndSaveMediaMessage(encmedia, `./sticker/${sender}`)
+					const packname1 = arg.split('|')[0]
+					const author1 = arg.split('|')[1]
+					exif.create(packname1, author1, `stickwm_${sender}`)
+					reply('wait')
+						await ffmpeg(`${media}`)
+							.inputFormat(media.split('.')[4])
+							.on('start', function (cmd) {
+								console.log(`Started : ${cmd}`)
+							})
+							.on('error', function (err) {
+								console.log(`Error : ${err}`)
+								fs.unlinkSync(media)
+								tipe = media.endsWith('.mp4') ? 'video' : 'gif'
+								reply('error')
+							})
+							.on('end', function () {
+								console.log('Finish')
+								exec(`webpmux -set exif ./sticker/stickwm_${sender}.exif ./sticker/${sender}.webp -o ./sticker/${sender}.webp`, async (error) => {
+									if (error) return reply('error')
+									wa.sendSticker(from, fs.readFileSync(`./sticker/${sender}.webp`), lin)									
+									fs.unlinkSync(media)
+									fs.unlinkSync(`./sticker/${sender}.webp`)
+									fs.unlinkSync(`./sticker/stickwm_${sender}.exif`)
+								})
+							})
+							.addOutputOptions([`-vcodec`,`libwebp`,`-vf`,`scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
+							.toFormat('webp')
+							.save(`./sticker/${sender}.webp`)
+				} else {
+					reply(`Kirim gambar/video dengan caption ${prefix}stickerwm nama|author atau tag gambar/video yang sudah dikirim\nNote : Durasi video maximal 10 detik`)
+				}
+				break
+          case 'sticker':
+			    case 'stiker':
+			    case 's':
+			     	 if (isMedia && !lin.message.videoMessage || isQuotedImage) {
+					   const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(lin).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lin
+					const media = await megayaa.downloadAndSaveMediaMessage(encmedia, `./sticker/${sender}`)
+					await ffmpeg(`${media}`)
+							.input(media)
+							.on('start', function (cmd) {
+								console.log(`Started : ${cmd}`)
+							})
+							.on('error', function (err) {
+								console.log(`Error : ${err}`)
+  								fs.unlinkSync(media)
+								reply('error')
+							})
+							.on('end', function () {
+								console.log('Finish')
+								exec(`webpmux -set exif ./sticker/data.exif ./sticker/${sender}.webp -o ./sticker/${sender}.webp`, async (error) => {
+									if (error) return reply('error')
+									wa.sendSticker(from, fs.readFileSync(`./sticker/${sender}.webp`), lin)
+									fs.unlinkSync(media)	
+									fs.unlinkSync(`./sticker/${sender}.webp`)	
+								})
+							})
+							.addOutputOptions([`-vcodec`,`libwebp`,`-vf`,`scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
+							.toFormat('webp')
+							.save(`./sticker/${sender}.webp`)
+			    	} else if ((isMedia && lin.message.videoMessage.fileLength < 10000000 || isQuotedVideo && lin.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.fileLength < 10000000)) {
+					  const encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(lin).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lin
+					  const media = await megayaa.downloadAndSaveMediaMessage(encmedia, `./sticker/${sender}`)
+					  reply('wait')
+						await ffmpeg(`${media}`)
+							.inputFormat(media.split('.')[4])
+							.on('start', function (cmd) {
+								console.log(`Started : ${cmd}`)
+							})
+							.on('error', function (err) {
+								console.log(`Error : ${err}`)
+								fs.unlinkSync(media)
+								tipe = media.endsWith('.mp4') ? 'video' : 'gif'
+								reply('error')
+							})
+							.on('end', function () {
+								console.log('Finish')
+								exec(`webpmux -set exif ./sticker/data.exif ./sticker/${sender}.webp -o ./sticker/${sender}.webp`, async (error) => {
+									if (error) return reply('error')
+									wa.sendSticker(from, fs.readFileSync(`./sticker/${sender}.webp`), lin)
+									fs.unlinkSync(media)
+									fs.unlinkSync(`./sticker/${sender}.webp`)
+								})
+							})
+							.addOutputOptions([`-vcodec`,`libwebp`,`-vf`,`scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
+							.toFormat('webp')
+							.save(`./sticker/${sender}.webp`)
+				  } else {
+					reply(`Kirim gambar/video dengan caption ${prefix}sticker atau tag gambar/video yang sudah dikirim\nNote : Durasi video maximal 10 detik`)
+				  }
+		  		break
           case 'getbio':
               var yy = lin.message.extendedTextMessage.contextInfo.mentionedJid[0]
               var p = await megayaa.getStatus(`${yy}`, MessageType.text)

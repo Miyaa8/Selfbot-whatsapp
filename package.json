@@ -9,6 +9,7 @@
     "dependencies": {
         "@adiwajshing/baileys": "^3.5.0",
         "form-data": "^4.0.0",
+        "fluent-ffmpeg": "^2.1.2",
         "performance-now": "^2.1.0",
         "node-fetch": "^2.6.1",
         "image-to-base64": "^2.1.1",
@@ -20,14 +21,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/megaa4282/Selfbot-whatsapp.git"
+        "url": "git+https://github.com/megaa4282/Simple-selfbotwa.git"
     },
     "keywords": [
         "selfbot"
     ],
     "author": "Meguyy",
     "bugs": {
-        "url": "https://github.com/megaa4282/Selfbot-whatsapp/issues"
+        "url": "https://github.com/megaa4282/Simple-selfbotwa/issues"
     },
-    "homepage": "https://github.com/Megaa4282/Selfbot-whatsapp#readme"
+    "homepage": "https://github.com/Megaa4282/Simple-selfbotwa#readme"
 }
