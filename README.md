@@ -27,7 +27,7 @@
 ```
 
 ## Edit config file
-Edit the required value in [`config.json`](https://github.com/megaa4282/Simple-selfbotwa/blob/main/config.json)
+Edit the required value in [`config.json`](https://github.com/Megaa4282/Simple-selfbotwa/blob/master/config.json)
 ```json
 {
     "owner": "628xxxx",
