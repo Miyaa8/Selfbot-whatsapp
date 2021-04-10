@@ -1,5 +1,5 @@
 const { 
-    WAConnection,
+  WAConnection,
   MessageType,
 	Presence,
 	MessageOptions,
@@ -18,6 +18,7 @@ const {
 const moment = require("moment-timezone");
 const FormData = require('form-data')
 const imageToBase64 = require('image-to-base64');
+const speed = require('performance-now');
 const chalk = require('chalk')
 const fs = require("fs")
 const { exec } = require('child_process');
@@ -343,9 +344,98 @@ Usage : send video and reply with your caption, ${prefix}upstoryvid halo
 
 41. *${prefix}upstory*
 Send text to status whatsapp
-Usage : ${prefix}upstory Hallo, i'm using bot`
+Usage : ${prefix}upstory Hallo, i'm using bot
+
+42. *${prefix}unmute*
+Unmute chat
+
+43. *${prefix}mute*
+mute chat
+
+44. *${prefix}delthischat*
+To delete chat
+
+45. *${prefix}archive*
+To archive your chat
+
+46. *${prefix}unarchiveall*
+To unarchive all chat
+
+47. *${prefix}pin*
+To pin chat
+
+48. *${prefix}unpin*
+Unpin chat
+
+49. *${prefix}runtime*
+To view runtime bot
+
+50. *${prefix}speed
+To view your speed`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
                 break
+          case 'speed': 
+		    	case 'ping':
+				      let timestamp = speed();
+				      let latensi = speed() - timestamp
+				      wa.sendFakeStatus2(from, `Speed: ${latensi.toFixed(4)}second`, fake)
+				      break
+          case 'runtime':
+				      run = process.uptime()
+			        let text = msg.runtime(run)
+				      wa.sendFakeStatus2(from, text, `Runtime bro`)
+				      break
+          case 'unpin':
+              if (!itsMe) return reply('This command only for lindow')
+              megayaa.modifyChat(from, ChatModification.unpin)
+              reply('*succes unpin this chat*')
+              console.log('unpin chat = ' + from)
+              break
+          case 'pin':
+              if (!itsMe) return reply('This command only for lindow')
+              megayaa.modifyChat(from, ChatModification.pin)
+              reply('*succes pin this chat*')
+              console.log('pinned chat = ' + from)
+              break
+          case 'unread?':
+			        const unread = await megayaa.loadAllUnreadMessages()
+			        megayaa.sendMessage(from, `unread message count : *${unread.length}*`, text)
+			        break
+          case 'unarchiveall':
+              if (!itsMe) return reply('This command only for mega')
+              reply('*succes unarchive all chat*')
+              console.log('succes unarchive chat = ' + from)
+              anu = await megayaa.chats.all()
+              for (let _ of anu) {
+              megayaa.modifyChat(_.jid, ChatModification.unarchive)
+                }
+              break
+          case 'archive':
+              if (!itsMe) return reply('This command only for lindow')
+              reply('*okey wait..*')
+              console.log('succes archive chat = ' + from)
+              await sleep(3000)
+              megayaa.modifyChat(from, ChatModification.archive)
+                break
+          case 'delthischat':
+              if (!itsMe) return reply('This command only for lindow')
+              reply('*succes delete this chat*')
+              console.log('succes delete chat = ' + from)
+              await sleep(4000)
+              megayaa.modifyChat(from, ChatModification.delete)
+              break
+          case 'mute':
+              if (!itsMe) return reply('This command only for mega')
+              megayaa.modifyChat(from, ChatModification.mute, 24*60*60*1000)
+            reply('*succes mute this chat*')
+            console.log('succes mute chat = ' + from)
+            break
+          case 'unmute':
+            if (!itsMe) return reply('This command only for mega')
+            megayaa.modifyChat(from, ChatModification.unmute)
+            reply('*succes unmute this chat*')
+            console.log('succes unmute chat = ' + from)
+            break
           case 'upstorypic':
               if (!itsMe) return reply('This command only for mega')
               var teksyy = body.slice(12)
