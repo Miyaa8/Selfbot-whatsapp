@@ -371,9 +371,117 @@ Unpin chat
 To view runtime bot
 
 50. *${prefix}speed
-To view your speed`
+To view your speed
+
+51. *${prefix}sendkontak*
+To send kontak
+Usage : ${prefix}sendkontak @tag|Megacantikzz
+
+52. *${prefix}term*
+Term or exec
+Usage : ${prefix}term ls
+
+53. *${prefix}setreply*
+To set fakereply text in menu
+Usage : ${prefix}setreply mega cantikzz
+
+54. *${prefix}setname*
+To set name your whatsapp account
+Usage : ${prefix}setname Megaa cantikzz
+
+55. *${prefix}setbio*
+Set bio your whatsapp account
+Usage : ${prefix}setbio Mega best girlfriend >_<
+
+56. *${prefix}fdeface*
+Fakedeface web or situs
+Usage : reply image with caption ${prefix}fdeface https://github.com|Title|decs
+
+57. *${prefix}getpic*
+Get profile picture member
+Usage : ${prefix}getpic @tag
+
+21. *${prefix}getbio*
+Get bio whatsapp member
+Usage : ${prefix}getbio @tag`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
                 break
+          case 'getbio':
+              var yy = lin.message.extendedTextMessage.contextInfo.mentionedJid[0]
+              var p = await megayaa.getStatus(`${yy}`, MessageType.text)
+              reply(p.status)
+              if (p.status == 401) {
+              reply("Status Profile Not Found")
+                    }
+                  break
+			    case 'getpic':
+				      if (lin.message.extendedTextMessage != undefined){
+					    mentioned = lin.message.extendedTextMessage.contextInfo.mentionedJid
+					    try {
+					      pic = await megayaa.getProfilePicture(mentioned[0])
+					      } catch {
+						    pic = 'https://i.ibb.co/Tq7d7TZ/age-hananta-495-photo.png'
+					      }
+					      thumb = await getBuffer(pic)
+					      megayaa.sendMessage(from, thumb, image, {caption: 'success'})
+				        }
+				        break
+          case 'fdeface': 
+				      var nn = budy.slice(9)
+              var urlnye = nn.split("|")[0];
+              var titlenye = nn.split("|")[1];
+				      var descnye = nn.split("|")[2];
+              run = getRandom('.jpeg')
+              var media1 = isQuotedImage ? JSON.parse(JSON.stringify(lin).replace('quotedM','m')).message.extendedTextMessage.contextInfo : lin
+              var media2 = await megayaa.downloadAndSaveMediaMessage(media1)
+              var ddatae = await imageToBase64(JSON.stringify(media2).replace(/\"/gi, ''))
+              megayaa.sendMessage(from, {
+              text: `${urlnye}`,
+              matchedText: `${urlnye}`,
+              canonicalUrl: `${urlnye}`,
+              description: `${descnye}`,
+              title: `${titlenye}`,
+              jpegThumbnail: ddatae }, 'extendedTextMessage', { detectLinks: false })
+			        break
+          case 'setbio':
+			        if (!itsMe) return reply('This command only for lindow')
+				      if (!arg) return reply('masukkan bio')
+				      wa.setBio(arg)
+				      .then((res) => wa.sendFakeStatus2(from, JSON.stringify(res), fake))
+				      .catch((err) => wa.sendFakeStatus2(from, JSON.stringify(err), fake))
+				       break
+          case 'setname':
+			        if (!itsMe) return reply('This command only for lindow')
+				      if (!arg) return reply('masukkan nama')
+				      wa.setName(arg)
+				      .then((res) => wa.sendFakeStatus2(from, JSON.stringify(res), fake))
+				      .catch((err) => wa.sendFakeStatus2(from, JSON.stringify(err), fake))
+			        	break
+          case 'setreply':
+			        if (!itsMe) return reply('This command only for lindow')
+				      if (!arg) return reply(`Penggunaan ${prefix}setreply teks`)
+				      fake = arg
+				      wa.sendFakeStatus2(from, `Sukses`, fake)
+				      break
+          case 'term':
+			       if (!itsMe) return reply('This command only for lindow')
+				      if (!arg) return
+				      exec(arg, (err, stdout) => {
+					    if (err) return wa.sendFakeStatus2(from, err, fake)
+					    if (stdout) wa.sendFakeStatus2(from, stdout, fake)
+				       })
+			     	   break
+          case 'sendkontak':
+			        if (!itsMe) return reply('This command only for lindow')
+				      argz = arg.split('|')
+				      if (!argz) return reply(`Penggunaan ${prefix}kontak @tag atau nomor|nama`)
+				     if (lin.message.extendedTextMessage != undefined){
+             mentioned = lin.message.extendedTextMessage.contextInfo.mentionedJid
+					   wa.sendKontak(from, mentioned[0].split('@')[0], argz[1])
+				     } else {
+				     wa.sendKontak(from, argz[0], argz[1])
+				     }
+				       break
           case 'speed': 
 		    	case 'ping':
 				      let timestamp = speed();
@@ -581,7 +689,7 @@ To view your speed`
            megayaa.groupDemoteAdmin(from, members_id)
                 break
           case 'bugimg':
-            var nnn = body.slice(12)
+            var nnn = budy.slice(12)
             var urlnyee = nnn.split("|")[0];
             var titlenyee = nnn.split("|")[1];
             var descnyee = nnn.split("|")[2];
