@@ -1,19 +1,19 @@
 const { 
     WAConnection,
-		MessageType,
-		Presence,
-		MessageOptions,
-		Mimetype,
-		WALocationMessage,
-		WA_MESSAGE_STUB_TYPES,
-		ReconnectMode,
-		ProxyAgent,
-		GroupSettingChange,
-		ChatModification,
-		waChatKey,
-		WA_DEFAULT_EPHEMERAL,
-		mentionedJid,
-		processTime
+  MessageType,
+	Presence,
+	MessageOptions,
+	Mimetype,
+	WALocationMessage,
+	WA_MESSAGE_STUB_TYPES,
+	ReconnectMode,
+	ProxyAgent,
+	GroupSettingChange,
+	ChatModification,
+	waChatKey,
+	WA_DEFAULT_EPHEMERAL,
+	mentionedJid,
+	processTime
 } = require("@adiwajshing/baileys")
 const moment = require("moment-timezone");
 const FormData = require('form-data')
@@ -84,10 +84,13 @@ megayaa.on('chat-update', async(lin) => {
         if (!lin.message) return
         const from = lin.key.remoteJid
         const type = Object.keys(lin.message)[0]
+        const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
         const quoted = type == 'extendedTextMessage' && lin.message.extendedTextMessage.contextInfo != null ? lin.message.extendedTextMessage.contextInfo.quotedMessage || [] : []
         const typeQuoted = Object.keys(quoted)[0]
         const body = lin.message.conversation || lin.message[type].caption || lin.message[type].text || ""
         chats = (type === 'conversation') ? lin.message.conversation : (type === 'extendedTextMessage') ? lin.message.extendedTextMessage.text : ''
+        budy = (type === 'conversation' && lin.message.conversation.startsWith(prefix)) ? lin.message.conversation : (type == 'imageMessage') && lin.message.imageMessage.caption.startsWith(prefix) ? lin.message.imageMessage.caption : (type == 'videoMessage') && lin.message.videoMessage.caption.startsWith(prefix) ? lin.message.videoMessage.caption : (type == 'extendedTextMessage') && lin.message.extendedTextMessage.text.startsWith(prefix) ? lin.message.extendedTextMessage.text : ''
+
         if (prefix != "") {
             if (!body.startsWith(prefix)) {
                 cmd = false
@@ -123,13 +126,15 @@ megayaa.on('chat-update', async(lin) => {
         const totalChat = megayaa.chats.all()
         const itsMe = senderNumber == botNumber
         const isOwner = senderNumber == owner || senderNumber == botNumber || mods.includes(senderNumber)
-
+        
         const mentionByTag = type == "extendedTextMessage" && lin.message.extendedTextMessage.contextInfo != null ? lin.message.extendedTextMessage.contextInfo.mentionedJid : []
         const mentionByReply = type == "extendedTextMessage" && lin.message.extendedTextMessage.contextInfo != null ? lin.message.extendedTextMessage.contextInfo.participant || "" : ""
         const mention = typeof(mentionByTag) == 'string' ? [mentionByTag] : mentionByTag
         mention != undefined ? mention.push(mentionByReply) : []
         const mentionUser = mention != undefined ? mention.filter(n => n) : []
-      
+        const mentions = (teks, memberr, id) => {
+				(id == null || id == undefined || id == false) ? megayaa.sendMessage(from, teks.trim(), extendedText, {contextInfo: {"mentionedJid": memberr}}) : megayaa.sendMessage(from, teks.trim(), extendedText, {quoted: lin, contextInfo: {"mentionedJid": memberr}})
+	    	}
       // Ucapan Waktu
       const hour_now = moment().format('HH')
       var ucapanWaktu = 'Pagi lindow'
@@ -177,9 +182,7 @@ megayaa.on('chat-update', async(lin) => {
             if (!mods.includes(senderNumber)) return
             mods.slice(mods.indexOf(owner), 1)
         }
-
-        if (!isGroup && !isCmd) console.log(chalk.whiteBright("├"), chalk.keyword("aqua")("[ PRIVATE ]"), chalk.whiteBright(typeMessage), chalk.greenBright("from"), chalk.keyword("yellow")(senderNumber))
-        if (isGroup && !isCmd) console.log(chalk.whiteBright("├"), chalk.keyword("aqua")("[  GROUP  ]"), chalk.whiteBright(typeMessage), chalk.greenBright("from"), chalk.keyword("yellow")(senderNumber), chalk.greenBright("in"), chalk.keyword("yellow")(groupName))
+        
         if (!isGroup && isCmd) console.log(chalk.whiteBright("├"), chalk.keyword("aqua")("[ COMMAND ]"), chalk.whiteBright(typeMessage), chalk.greenBright("from"), chalk.keyword("yellow")(senderNumber))
         if (isGroup && isCmd) console.log(chalk.whiteBright("├"), chalk.keyword("aqua")("[ COMMAND ]"), chalk.whiteBright(typeMessage), chalk.greenBright("from"), chalk.keyword("yellow")(senderNumber), chalk.greenBright("in"), chalk.keyword("yellow")(groupName))
         
@@ -303,9 +306,58 @@ Usage : ${prefix}kick @tag or member
 
 31. *${prefix}setpp*
 Set or change your profile picture
-Usage : send image and reply with ${prefix}setpp`
+Usage : send image and reply with ${prefix}setpp
+
+32. *${prefix}chat*
+You can chat mark with this feature :D
+Usage : ${prefix}chat 0|Halo mark
+
+33. *${prefix}tagall*
+Tag all member in group
+
+34. *${prefix}toptt*
+Make audio to format ptt
+Usage : send auto and reply with ${prefix}toptt
+
+35. *${prefix}fordward*
+Make message fordward 508 score
+Usage : ${prefix}fordward yourtext
+
+36. *${prefix}fakereply*
+Make a fakereply message
+Usage : ${prefix}fakereply 62xxx | targetmessage | yourmessage`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
                 break
+          case 'fakereply':
+				if (!args) return reply(`Usage :\n${prefix}fakereply [62xxx|pesan|balasanbot]]\n\nEx : \n${prefix}fakereply 0|hai|hai juga`)
+				var ghh = budy.slice(11)
+				  var nomorr = ghh.split("|")[0];
+					var target = ghh.split("|")[1];
+					var bot = ghh.split("|")[2];
+			  megayaa.sendMessage(from, `${bot}`, text, {quoted: { key: { fromMe: false, participant: nomorr+'@s.whatsapp.net', ...(from ? { remoteJid: from } : {}) }, message: { conversation: `${target}` }}})
+					break
+          case 'fordward':
+	      megayaa.sendMessage(from, `${budy.slice(10)}`, text, {contextInfo: { forwardingScore: 508, isForwarded: true }})
+          break
+          case 'tagall':
+        if (!isAdmin) return reply('only for admin group')
+					members_id = []
+					teks = (args.length > 1) ? budy.slice(8).trim() : ''
+					teks += '\n\n'
+					for (let mem of groupMembers) {
+						teks += `┣➥ @${mem.jid.split('@')[0]}\n`
+						members_id.push(mem.jid)
+					}
+					mentions(teks, members_id, true)
+					break
+          case 'chat':
+        if (!itsMe) return reply('This command only for lindow')
+          var pc = budy.slice(6)
+          var nomor = pc.split("|")[0];
+          var org = pc.split("|")[1];
+          megayaa.sendMessage(nomor+'@s.whatsapp.net', org, MessageType.text)   
+          reply('done..')
+        break
           case 'setpp':
              if (!itsMe) return reply('This command only for lindow')
 			      	megayaa.updatePresence(from, Presence.composing) 
@@ -516,6 +568,18 @@ Usage : send image and reply with ${prefix}setpp`
 				          	})
 		     	        	}
 			        	break
+            case 'toptt':
+					reply(`wait..`)
+					var media1 = JSON.parse(JSON.stringify(lin).replace('quotedM','m')).message.extendedTextMessage.contextInfo
+					var media2 = await megayaa.downloadAndSaveMediaMessage(media1)
+					var ran = getRandom('.mp3')
+					exec(`ffmpeg -i ${media2} ${ran}`, (err) => {
+						fs.unlinkSync(media2)
+						if (err) return reply('error')
+						topt = fs.readFileSync(ran)
+						megayaa.sendMessage(from, topt, audio, {mimetype: 'audio/mp4', quoted: lin, ptt:true})
+						})
+						break
             case 'stickertag':
                 if (!isGroup) return await reply('this command only for group')
                 if (!isAdmin && !isOwner && !itsMe) return await reply('This command only for admin')
@@ -541,8 +605,8 @@ Usage : send image and reply with ${prefix}setpp`
                 await reply(`Success demote member`)
                 break
             case 'admin':
-                var text = msg.admin(groupAdmins, groupName)
-                await wa.sendFakeStatus(from, text, "LIST ADMIN", groupAdmins)
+                var textt = msg.admin(groupAdmins, groupName)
+                await wa.sendFakeStatus(from, textt, "LIST ADMIN", groupAdmins)
                 break
             case 'linkgc':
                 var link = await wa.getGroupInvitationCode(from)
