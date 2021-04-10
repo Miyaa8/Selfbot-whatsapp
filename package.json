@@ -20,14 +20,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/megaa4282/Simple-selfbotwa.git"
+        "url": "git+https://github.com/megaa4282/Selfbot-whatsapp.git"
     },
     "keywords": [
         "selfbot"
     ],
     "author": "Meguyy",
     "bugs": {
-        "url": "https://github.com/megaa4282/Simple-selfbotwa/issues"
+        "url": "https://github.com/megaa4282/Selfbot-whatsapp/issues"
     },
-    "homepage": "https://github.com/Megaa4282/Simple-selfbotwa#readme"
+    "homepage": "https://github.com/Megaa4282/Selfbot-whatsapp#readme"
 }
