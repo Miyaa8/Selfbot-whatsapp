@@ -8,7 +8,7 @@
 ```cmd
 > pkg install git
 > pkg install nodejs
-> git clone https://github.com/megaa4282/Simple-selfbotwa.git
+> git clone https://github.com/megaa4282/Selfbot-whatsapp.git
 > cd Simple-selfbotwa
 > bash install.sh
 > npm start
@@ -19,7 +19,7 @@
 * [`Download Node JS`](https://nodejs.org/en/download/)
 * [`Download Git`](https://git-scm.com/downloads)
 ```cmd
-> git clone https://github.com/megaa4282/Simple-selfbotwa.git
+> git clone https://github.com/megaa4282/Selfbot-whatsapp.git
 > cd Simple-selfbotwa
 > npm i
 > npm start
