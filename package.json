@@ -1,0 +1,32 @@
+{
+    "name": "Simple-selfbot",
+    "version": "1.0.0",
+    "description": "modification script LoL-Human",
+    "main": "index.js",
+    "directories": {
+        "test": "test"
+    },
+    "dependencies": {
+        "@adiwajshing/baileys": "^3.5.0",
+        "form-data": "^4.0.0",
+        "node-fetch": "^2.6.1",
+        "image-to-base64": "^2.1.1",
+        "moment-timezone": "^0.5.33"
+    },
+    "devDependencies": {},
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/megaa4282/Simple-selfbotwa.git"
+    },
+    "keywords": [
+        "selfbot"
+    ],
+    "author": "Meguyy",
+    "bugs": {
+        "url": "https://github.com/megaa4282/Simple-selfbotwa/issues"
+    },
+    "homepage": "https://github.com/Megaa4282/Simple-selfbotwa#readme"
+}
