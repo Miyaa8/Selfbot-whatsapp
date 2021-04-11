@@ -44,3 +44,4 @@ Edit the required value in [`config.json`](https://github.com/Megaa4282/Simple-s
 ## Thanks to
 * [`Baileys`](https://github.com/adiwajshing/Baileys)
 * [`LolHuman`](https://github.com/LoL-Human)
+* [`Lindow`](https://github.com/mccnlight)
