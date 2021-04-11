@@ -9,7 +9,7 @@
 > pkg install git
 > pkg install nodejs
 > git clone https://github.com/megaa4282/Selfbot-whatsapp.git
-> cd Simple-selfbotwa
+> cd Selfbot-whatsapp
 > bash install.sh
 > npm start
 ```
@@ -20,7 +20,7 @@
 * [`Download Git`](https://git-scm.com/downloads)
 ```cmd
 > git clone https://github.com/megaa4282/Selfbot-whatsapp.git
-> cd Simple-selfbotwa
+> cd Selfbot-whatsapp
 > npm i
 > npm start
 > scan qr
@@ -37,6 +37,23 @@ Edit the required value in [`config.json`](https://github.com/Megaa4282/Simple-s
     "public": false
 }
 ```
+
+## Feature
+* public
+* self
+* setprefix
+* broadcast
+* setthumb
+* fakethumb
+* stats
+* block
+* unblock
+* leave
+* join
+* clearall
+* hidetag
+* imagetag
+* stickertag
 
 ## Join Group
 * [`My Group`](https://chat.whatsapp.com/JYb7i2b4GbICa0fk17KHOk)
