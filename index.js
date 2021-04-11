@@ -42,6 +42,9 @@ const owner = config.owner
 const mods = config.mods
 var public = config.public
 
+// Database
+const imagenye = JSON.parse(fs.readFileSync('./database/image.json'))
+
 conn.connect()
 const megayaa = conn.megayaa
 
@@ -453,9 +456,51 @@ Get random profile picture couple
 Get random video asupan
 
 67. *${prefix}randomaesthetic*
-Get random aesthetic or amv video`
+Get random aesthetic or amv video
+
+*Storage Bot*
+
+1. *${prefix}addimage*
+Add image to storage
+Usage : ${prefix}addimage Test
+
+*${prefix}listimage*
+To view list image
+
+*${prefix}getimage*
+Get image from storage
+Usage : ${prefix}getimage Test`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
                 break
+          case 'listimage':
+			     	 teks = '*List Image :*\n\n'
+			     	 for (let awokwkwk of imagenye) {
+					      teks += `- ${awokwkwk}\n`
+				     }
+				     teks += `\n*Total : ${imagenye.length}*`
+				     megayaa.sendMessage(from, teks.trim(), extendedText, { quoted: lin, contextInfo: { "mentionedJid": imagenye } })
+			        break
+           case 'getimage':
+				      namastc = body.slice(10)
+				      buffer = fs.readFileSync(`./lib/image/${namastc}.jpeg`)
+				      megayaa.sendMessage(from, buffer, image, {quoted: {
+                key: {
+                fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? {
+                remoteJid: "status@broadcast"
+                }: {})
+                }, message: { conversation: `Result for database : ${namastc}.jpg` }}})
+				      break
+          case 'addimage':
+			     	if (!isQuotedImage) return reply('reply image!')
+				       svst = body.slice(10)
+				    if (!svst) return reply('input image name!')
+				    boij = JSON.parse(JSON.stringify(lin).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo
+				   delb = await megayaa.downloadMediaMessage(boij)
+				   imagenye.push(`${svst}`)
+				     fs.writeFileSync(`./lib/image/${svst}.jpeg`, delb)
+				   fs.writeFileSync('./database/image.json', JSON.stringify(imagenye))
+			      reply(`Success add image\n${prefix}listimage to view list image`)
+				    break
           case 'exif':
 			        if (!itsMe) return reply('This command only for lindow')
 			      	if (args.length < 1) return reply(`Penggunaan ${prefix}exif nama|autho`)
@@ -485,8 +530,8 @@ Get random aesthetic or amv video`
           var { title, result } = res.data
           thumbb = await getBuffer(`${res.data.image}`)
           megayaa.sendMessage(from, thumbb, image, {caption: `${title}`})
-          audionye = await getBuffer(result)
-          megayaa.sendMessage(from, audionye, audio, {mimetype: 'audio/mp4', filename: `${title}.mp3`, quoted: lin})
+          audiony = await getBuffer(result)
+          megayaa.sendMessage(from, audiony, audio, {mimetype: 'audio/mp4', filename: `${title}.mp3`, quoted: lin})
           break
         case 'ppcouple':
           getres = await axios.get(`https://lindow-api.herokuapp.com/api/ppcouple?apikey=${apikey}`)
