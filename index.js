@@ -23,6 +23,7 @@ const chalk = require('chalk')
 const fs = require("fs")
 const { exec } = require('child_process');
 const ffmpeg = require('fluent-ffmpeg');
+const axios = require('axios');
 
 const conn = require("./lib/connect")
 const msg = require("./lib/message")
@@ -51,11 +52,11 @@ const sleep = async (ms) => {
 fakeimage = fs.readFileSync(`./lib/image/foto2.jpg`)
 fake = 'Simple Selfbot'
 prefix = 'z'
-
+apikey = 'LindowApi' // Get in lindow-api.herokuapp.com
 
 megayaa.on('CB:action,,call', async json => {
     const callerId = json[2][0][1].from;
-    console.log(json)
+    console.log("call dari "+ callerId)
         megayaa.sendMessage(callerId, "Auto block system, don't call please", MessageType.text)
         await sleep(4000)
         await megayaa.blockUser(callerId, "add") // Block user
@@ -431,7 +432,28 @@ Usage : send sticker and reply ${prefix}takestick yourname | author
 
 62. *${prefix}colong* <reply stiker>
 Change wm on sticker
-Usage : send sticker and reply ${prefix}colong`
+Usage : send sticker and reply ${prefix}colong
+
+63. *${prefix}ytsearch*
+To search video youtube
+usage : ${prefix}ytsearch how to make a baby
+
+64. *${prefix}igdl*
+To download Instagram post
+Usage : ${prefix}igdl link
+
+65. *${prefix}scdl*
+Download music with url soundcloud
+Usage : ${prefix}scdl link
+
+65. *${prefix}ppcouple*
+Get random profile picture couple
+
+66. *${prefix}asupan*
+Get random video asupan
+
+67. *${prefix}randomaesthetic*
+Get random aesthetic or amv video`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
                 break
           case 'exif':
@@ -457,6 +479,43 @@ Usage : send sticker and reply ${prefix}colong`
 					 fs.unlinkSync(`./sticker/takestick_${sender}.exif`)
 				   })
 				   break
+        case 'scdl':
+          var url = budy.slice(6)
+          var res = await axios.get(`https://lindow-api.herokuapp.com/api/dlsoundcloud?url=${url}&apikey=${apikey}`)
+          var { title, result } = res.data
+          thumbb = await getBuffer(`${res.data.image}`)
+          megayaa.sendMessage(from, thumbb, image, {caption: `${title}`})
+          audionye = await getBuffer(result)
+          megayaa.sendMessage(from, audionye, audio, {mimetype: 'audio/mp4', filename: `${title}.mp3`, quoted: lin})
+          break
+        case 'ppcouple':
+          getres = await axios.get(`https://lindow-api.herokuapp.com/api/ppcouple?apikey=${apikey}`)
+          var { male, female } = getres.data.result
+          picmale = await getBuffer(`${male}`)
+          megayaa.sendMessage(from, picmale, image)
+          picfemale = await getBuffer(`${female}`)
+          megayaa.sendMessage(from, picfemale, image)
+          break
+        case 'randomaesthetic':
+          url = `https://lindow-api.herokuapp.com/api/randomaesthetic?apikey=${apikey}`
+          estetik = await getBuffer(url)
+          megayaa.sendMessage(from, estetik, video, {mimetype: 'video/mp4', filename: `estetod.mp4`, quoted: lin, caption: 'success'})
+          break
+        case 'asupan':
+          url = `https://lindow-api.herokuapp.com/api/asupan?apikey=${apikey}`
+          asupan = await getBuffer(url)
+          megayaa.sendMessage(from, asupan, video, {mimetype: 'video/mp4', filename: `asupan.mp4`, quoted: lin, caption: 'success'})
+          break
+        case 'igdl':
+          var ini_url = body.slice(6)
+          var ini_url2 = await axios.get(`https://lindow-api.herokuapp.com/api/igdl?link=${ini_url}&apikey=${apikey}`)
+          var ini_url3 = ini_url2.data.result.url
+          var ini_type = image
+            if (ini_url3.includes(".mp4")) ini_type = video
+            var ini_buffer = await getBuffer(ini_url3)
+            var inicaption = `Username account : ${ini_url2.data.result.username}\n\nCaption : ${ini_url2.data.result.caption}\n\nShortcode : ${ini_url2.data.result.shortcode}\n\nDate : ${ini_url2.data.result.date}`
+          megayaa.sendMessage(from, ini_buffer, ini_type, {quoted: lin, caption: inicaption})
+          break
 			  case 'colong':
 				   if (!isQuotedSticker) return reply(`Reply sticker dengan caption *${prefix}colong*`)
 				  const encmediia = JSON.parse(JSON.stringify(lin).replace('quotedM','m')).message.extendedTextMessage.contextInfo
