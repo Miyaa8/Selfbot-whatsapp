@@ -41,19 +41,71 @@ Edit the required value in [`config.json`](https://github.com/Megaa4282/Simple-s
 ## Feature
 * public
 * self
-* setprefix
+* set prefix
 * broadcast
-* setthumb
-* fakethumb
+* set thumb
+* fake thumb
 * stats
 * block
 * unblock
 * leave
 * join
 * clearall
-* hidetag
-* imagetag
-* stickertag
+* hide tag
+* image tag
+* sticker tag
+* promote
+* demote
+* list admin
+* link group
+* group open/close
+* set name group
+* set description group
+* bug image
+* demote all
+* ocr
+* to image
+* shutdown
+* spam
+* add member
+* kick member
+* set ur profile picture
+* tag all
+* to ptt
+* fordward
+* fake reply
+* unread all
+* read all
+* up story text
+* up story video
+* up story image
+* unmute
+* mute
+* delete this chat
+* archive
+* un archive all
+* pin chat
+* unpin chat
+* runtime
+* view speed
+* send kontak
+* term
+* set reply
+* set name
+* set bio
+* fake deface
+* get pp member
+* get bio member
+* make image to sticker
+* sticker with watermark
+* change wm sticker
+* yt search
+* instagram downloader
+* soundcloud downloader
+* get pp couple
+* get random asupan video
+* get aesthetic video
+* and storage bot
 
 ## Join Group
 * [`My Group`](https://chat.whatsapp.com/JYb7i2b4GbICa0fk17KHOk)
