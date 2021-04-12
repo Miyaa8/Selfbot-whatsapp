@@ -509,8 +509,9 @@ Usage : ${prefix}getimage Test`
                     let hm = `*Menampilkan list hero mobile legends*\n\n`
                     for (var i = 0; i < ress.hero.length; i++) {
                         hm += '➣  ' + ress.hero[i] + '\n'
-                    })
+                    }
                     reply(hm)
+                    })
                 break
             case 'herodetail':
                 herodetails(body.slice(12)).then((res) => {
