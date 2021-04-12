@@ -25,6 +25,7 @@ const { exec } = require('child_process');
 const ffmpeg = require('fluent-ffmpeg');
 const axios = require('axios');
 
+const { Gempa } = require("./lib/gempa.js");
 const { SearchKartun, Movie, Drama, Action, Adventure } = require("./lib/kartun.js")
 const { herolist } = require("./lib/herolist.js")
 const { herodetails } = require("./lib/herodetail.js")
@@ -490,6 +491,9 @@ Get a random kartun action
 77. *${prefix}kartunadventure*
 Get a random kartun adventure
 
+78. *${prefix}gempa*
+Get info about gempa
+
 *Storage Bot*
 
 1. *${prefix}addimage*
@@ -503,6 +507,14 @@ To view list image
 Get image from storage
 Usage : ${prefix}getimage Test`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
+                break
+            case 'gempa':
+                const tres = await Gempa()
+                var { Waktu, Lintang, Bujur, Magnitude, Kedalaman, Wilayah, Map } = tres.result
+                console.log(Map)
+                captt = `Waktu : ${Waktu}\nLintang : ${Lintang}\nBujur : ${Bujur}\nWilayah : ${Wilayah}`
+                thumbbb = await getBuffer(Map)
+                megayaa.sendMessage(from, thumbbb, image, {caption: `${captt}`})
                 break
             case 'herolist':
                 await herolist().then((ress) => {
