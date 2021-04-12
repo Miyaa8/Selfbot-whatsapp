@@ -25,6 +25,7 @@ const { exec } = require('child_process');
 const ffmpeg = require('fluent-ffmpeg');
 const axios = require('axios');
 
+const { SearchKartun, Movie, Drama, Action, Adventure } = require("./lib/kartun.js")
 const { herolist } = require("./lib/herolist.js")
 const { herodetails } = require("./lib/herodetail.js")
 const conn = require("./lib/connect")
@@ -472,6 +473,23 @@ Usage : ${prefix}kisahnabi Muhammad
 71. *${prefix}herodetail*
 Usage : ${prefix}herodetail miya
 
+72. *${prefix}herolist*
+
+73. *${prefix}searchkartun*
+Usage : ${prefix}searchkartun spongebob
+
+74. *${prefix}kartunmovie*
+Get a random kartun movie
+
+75. *${prefix}kartundrama*
+Get a random kartun drama
+
+76. *${prefix}kartunaction*
+Get a random kartun action
+
+77. *${prefic}kartunadventure*
+Get a random kartun adventure
+
 *Storage Bot*
 
 1. *${prefix}addimage*
@@ -527,6 +545,53 @@ Usage : ${prefix}getimage Test`
                 reply(capt)
                 })
                 break
+            case 'kartundrama':
+                Drama().then(ress => {
+                let megg = `Random Drama Kartun`
+                for (let i = 0; i < ress.hasil.length; i++) {
+                    megg += `\n\n${ress.hasil[i].sinopsis}\nUrl : ${ress.hasil[i].url}\nImage : ${ress.hasil[i].img}`
+                }
+                reply(megg)
+                })
+                break
+            case 'kartunadventure':
+                Adventure().then(ress => {
+                let megggg = `Random Adventure Kartun`
+                for (let i = 0; i < ress.hasil.length; i++) {
+                    megggg += `\n\n${ress.hasil[i].sinopsis}\nUrl : ${ress.hasil[i].link}\nImage : ${ress.hasil[i].img}`
+                }
+                reply(megggg)
+                })
+                break
+            case 'kartunaction':
+                Action().then(ress => {
+                let meggg = `Random Action Kartun`
+                for (let i = 0; i < ress.hasil.length; i++) {
+                    meggg += `\n\n${ress.hasil[i].sinopsis}\nUrl : ${ress.hasil[i].link}\nImage : ${ress.hasil[i].img}`
+                }
+                reply(meggg)
+                })
+                break
+            case 'kartunmovie':
+                Movie().then(result => {
+                let meg = `Random Movie Kartun`
+		for (let i = 0; i < result.hasil.length; i++) {
+		    meg += `\n\n${result.hasil[i].sinopsis}\nUrl : ${result.hasil[i].url}\nImage : ${result.hasil[i].img}`
+		}
+		reply(meg)
+		})
+                break
+            case 'searchkartun':
+                film = body.slice(14)
+                SearchKartun(film)
+		.then(result => {
+		let hehee = `Search kartun\nQuery : ${film}`
+		for (let i = 0; i < result.hasil.length; i++) {
+		    hehee += `\n\n${result.hasil[i].sinopsis}\nLink : ${result.hasil[i].link}\nEpisode : ${result.hasil[i].episode}\nGenre : ${result.hasil[i].genre}\nImage : ${result.hasil[i].image}`
+		}
+		reply(hehee)
+		})
+	        break
             case 'ayatkursi':
                 res = await axios.get(`https://lindow-api.herokuapp.com/api/muslim/ayatkursi?apikey=${apikey}`)
                 var { tafsir, arabic, latin } = res.data.result.data
