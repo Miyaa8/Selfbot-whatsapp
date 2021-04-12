@@ -43,7 +43,7 @@ const getJson = help.getJson
 const config = JSON.parse(fs.readFileSync("./config.json"))
 const owner = config.owner
 const mods = config.mods
-var public = config.public
+const public = config.public
 
 // Database
 const imagenye = JSON.parse(fs.readFileSync('./database/image.json'))
@@ -487,7 +487,7 @@ Get a random kartun drama
 76. *${prefix}kartunaction*
 Get a random kartun action
 
-77. *${prefic}kartunadventure*
+77. *${prefix}kartunadventure*
 Get a random kartun adventure
 
 *Storage Bot*
