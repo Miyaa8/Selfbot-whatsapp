@@ -559,13 +559,13 @@ Usage : ${prefix}getimage Test`
                 })
                 break
             case 'kartundrama':
-                Drama().then(ress => {
+                ress = await Drama()
                 let megg = `Random Drama Kartun`
                 for (let i = 0; i < ress.hasil.length; i++) {
-                    megg += `\n\n${ress.hasil[i].sinopsis}\nUrl : ${ress.hasil[i].url}\nImage : ${ress.hasil[i].img}`
+                  megg += `\n\n${ress.hasil[i].sinopsis}\nUrl : ${ress.hasil[i].url}\nImage : ${ress.hasil[i].img}`
                 }
-                reply(megg)
-                })
+                thumb = await getBuffer(ress.hasil[0].img)
+                megayaa.sendMessage(from, thumb, image, {caption: `${megg}`})
                 break
             case 'kartunadventure':
                 Adventure().then(ress => {
@@ -709,7 +709,7 @@ Usage : ${prefix}getimage Test`
                     if (ini_url3.includes(".mp4")) ini_type = video
                     var ini_buffer = await getBuffer(ini_url3)
                     var inicaption = `Username account : ${ini_url2.data.result.username}\n\nCaption : ${ini_url2.data.result.caption}\n\nShortcode : ${ini_url2.data.result.shortcode}\n\nDate : ${ini_url2.data.result.date}`
-                    megayaa.sendMessage(from, ini_buffer, ini_type, {quoted: lin, caption: inicaption})
+                    megayaa.sendMessage(from, ini_buffer, ini_type, {quoted: lin, caption: `${inicaption}`})
                 break
 	    case 'colong':
 		if (!isQuotedSticker) return reply(`Reply sticker dengan caption *${prefix}colong*`)
