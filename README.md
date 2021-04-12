@@ -109,6 +109,7 @@ Edit the required value in [`config.json`](https://github.com/Megaa4282/Simple-s
 * ayat kursi
 * kisah nabi
 * al qur'an
+* AND MORE, CEK SENDIRI!
 
 ## Join Group
 * [`My Group`](https://chat.whatsapp.com/JYb7i2b4GbICa0fk17KHOk)
