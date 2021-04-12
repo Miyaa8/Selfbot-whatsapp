@@ -562,49 +562,58 @@ Usage : ${prefix}getimage Test`
                 ress = await Drama()
                 let megg = `Random Drama Kartun`
                 for (let i = 0; i < ress.hasil.length; i++) {
-                  megg += `\n\n${ress.hasil[i].sinopsis}\nUrl : ${ress.hasil[i].url}\nImage : ${ress.hasil[i].img}`
+                  megg += `\n\n${ress.hasil[i].sinopsis}\nUrl : ${ress.hasil[i].url}`
                 }
                 thumb = await getBuffer(ress.hasil[0].img)
                 megayaa.sendMessage(from, thumb, image, {caption: `${megg}`})
                 break
             case 'kartunadventure':
-                Adventure().then(ress => {
+                ress = await Adventure()
                 let megggg = `Random Adventure Kartun`
                 for (let i = 0; i < ress.hasil.length; i++) {
-                    megggg += `\n\n${ress.hasil[i].sinopsis}\nUrl : ${ress.hasil[i].link}\nImage : ${ress.hasil[i].img}`
+                  megggg += `\n\n${ress.hasil[i].sinopsis}\nUrl : ${ress.hasil[i].link}`
                 }
-                reply(megggg)
-                })
+                thumb = await getBuffer(ress.hasil[0].img)
+                megayaa.sendMessage(from, thumb, image, {caption: `${megggg}`})
                 break
             case 'kartunaction':
-                Action().then(ress => {
+                ress = await Action()
                 let meggg = `Random Action Kartun`
                 for (let i = 0; i < ress.hasil.length; i++) {
-                    meggg += `\n\n${ress.hasil[i].sinopsis}\nUrl : ${ress.hasil[i].link}\nImage : ${ress.hasil[i].img}`
+                  meggg += `\n\n${ress.hasil[i].sinopsis}\nUrl : ${ress.hasil[i].link}`
                 }
-                reply(meggg)
-                })
+                thumb = await getBuffer(ress.hasil[0].img)
+                megayaa.sendMessage(from, thumb, image, {caption: `${meggg}`})
                 break
             case 'kartunmovie':
-                Movie().then(result => {
+                try {
+                result = await Movie()
                 let meg = `Random Movie Kartun`
 		for (let i = 0; i < result.hasil.length; i++) {
-		    meg += `\n\n${result.hasil[i].sinopsis}\nUrl : ${result.hasil[i].url}\nImage : ${result.hasil[i].img}`
-		}
-		reply(meg)
-		})
+	        meg += `\n\n${result.hasil[i].sinopsis}\nUrl : ${result.hasil[i].url}`
+	        }
+		thumb = await getBuffer(result.hasil[0].img)
+                megayaa.sendMessage(from, thumb, image, {caption: `${meg}`})
+                } catch (e) {
+                console.log(e)
+                reply(e)
+                }
                 break
             case 'searchkartun':
                 film = body.slice(14)
-                SearchKartun(film)
-		.then(result => {
-		let hehee = `Search kartun\nQuery : ${film}`
-		for (let i = 0; i < result.hasil.length; i++) {
-		    hehee += `\n\n${result.hasil[i].sinopsis}\nLink : ${result.hasil[i].link}\nEpisode : ${result.hasil[i].episode}\nGenre : ${result.hasil[i].genre}\nImage : ${result.hasil[i].image}`
-		}
-		reply(hehee)
-		})
-	        break
+                try {
+                    result = await SearchKartun(film)
+		    let hehee = `Search kartun\nQuery : ${film}`
+		    for (let i = 0; i < result.hasil.length; i++) {
+		    hehee += `\n\n${result.hasil[i].sinopsis}\nLink : ${result.hasil[i].link}\nEpisode : ${result.hasil[i].episode}\nGenre : ${result.hasil[i].genre}`
+		    }
+		    thumb = await getBuffer(result.hasil[0].image)
+                    megayaa.sendMessage(from, thumb, image, {caption: `${hehee}`})
+                } catch (e) {
+                console.log(e)
+                reply(`Error, Coba judul lain!\n\nExample: ${prefix}searchkartun Spongebob`)
+                }
+		break
             case 'ayatkursi':
                 res = await axios.get(`https://lindow-api.herokuapp.com/api/muslim/ayatkursi?apikey=${apikey}`)
                 var { tafsir, arabic, latin } = res.data.result.data
