@@ -468,6 +468,9 @@ Usage : ${prefix}kisahnabi Muhammad
 
 70. *${prefix}ayatkursi*
 
+71. *${prefix}herodetail*
+Usage : ${prefix}herodetail miya
+
 *Storage Bot*
 
 1. *${prefix}addimage*
