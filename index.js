@@ -25,6 +25,7 @@ const { exec } = require('child_process');
 const ffmpeg = require('fluent-ffmpeg');
 const axios = require('axios');
 
+const { herolist } = require("./lib/herolist.js")
 const { herodetails } = require("./lib/herodetail.js")
 const conn = require("./lib/connect")
 const msg = require("./lib/message")
@@ -484,6 +485,14 @@ To view list image
 Get image from storage
 Usage : ${prefix}getimage Test`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
+                break
+            case 'herolist':
+                await herolist().then((ress) => {
+                    let hm = `*Menampilkan list hero mobile legends*\n\n`
+                    for (var i = 0; i < ress.hero.length; i++) {
+                        hm += '➣  ' + ress.hero[i] + '\n'
+                    }
+                    reply(hm)
                 break
             case 'herodetail':
                 herodetails(body.slice(12)).then((res) => {
