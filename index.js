@@ -459,6 +459,14 @@ Get random video asupan
 67. *${prefix}randomaesthetic*
 Get random aesthetic or amv video
 
+68. *${prefix}quoteislam*
+Get a random quoteislam
+
+69. *${prefix}kisahnabi*
+Usage : ${prefix}kisahnabi Muhammad
+
+70. *${prefix}ayatkursi*
+
 *Storage Bot*
 
 1. *${prefix}addimage*
@@ -472,6 +480,23 @@ To view list image
 Get image from storage
 Usage : ${prefix}getimage Test`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
+                break
+            case 'ayatkursi':
+                res = await axios.get(`https://lindow-api.herokuapp.com/api/muslim/ayatkursi?apikey=${apikey}`)
+                var { tafsir, arabic, latin } = res.data.result.data
+                reply(`Tafsir : ${tafsir}\n\nArabic : ${arabic}\n\nLatin : ${latin}`)
+                break
+            case 'kisahnabi':
+                nama = budy.slice(11)
+                getres = await axios.get(`https://lindow-api.herokuapp.com/api/kisahnabi?nabi=${nama}&apikey=${apikey}`)
+                var { nabi, lahir, umur, tempat, kisah } = getres.data.result.nabi
+                caption = `Kisah Nabi\n\nNama nabi : ${nabi}\n\nLahir pada : ${lahir}\n\nUmur : ${umur}\n\nTempat : ${tempat}\n\nKisah :\n\n${kisah}`
+                foto = await getBuffer(`${getres.data.result.nabi.image}`)
+                megayaa.sendMessage(from, foto, image, {caption: caption})
+                break
+            case 'quoteislam':
+                quote = await axios.get(`https://lindow-api.herokuapp.com/api/randomquote/muslim?apikey=${apikey}`)
+                reply(`${quote.data.result.text_id}`)
                 break
             case 'listimage':
 	        teks = '*List Image :*\n\n'
