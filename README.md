@@ -106,6 +106,9 @@ Edit the required value in [`config.json`](https://github.com/Megaa4282/Simple-s
 * get random asupan video
 * get aesthetic video
 * and storage bot
+* ayat kursi
+* kisah nabi
+* al qur'an
 
 ## Join Group
 * [`My Group`](https://chat.whatsapp.com/JYb7i2b4GbICa0fk17KHOk)
