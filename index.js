@@ -512,6 +512,20 @@ Usage : ${prefix}tinyurl link
 80. *${prefix}noprefix*
 Change to no prefix mode
 
+81. *${prefix}pinterest*
+Usage : ${prefix}pinterest query
+
+82. *${prefix}dewabatch*
+Get info from dewabatch
+Usage : ${prefix}dewabatch Darling in the franxx
+
+83. *${prefix}wikipedia*
+Usage : ${prefix}wikipedia query
+
+84. *${prefix}kusonime*
+Get info from kusonime
+Usage : ${prefix}kusonime Darling in the franxx
+
 *Storage Bot*
 
 1. *${prefix}addimage*
@@ -527,6 +541,42 @@ Usage : ${prefix}getimage Test
 
 Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
+                break
+            case 'wikipedia':
+                q = body.slice(11)
+                wiki = await axios.get(`https://lindow-python-api.herokuapp.com/api/wiki?q=${q}`)
+                reply(`Hasil pencarin dari ${q}\n\n${wiki.data.result}\n\nJika undefined berarti query tidak ditemukan`)
+                break
+            case 'kusonime':
+                try {
+                q = body.slice(10)
+                kus = await axios.get(`https://lindow-python-api.herokuapp.com/api/kuso?q=${q}`)
+                var { info, link_dl, sinopsis, thumb, title } = kus.data
+                buf = await getBuffer(thumb)
+                cap = `Title : ${title}\n\n${info}\n\nLink download : ${link_dl}\n\nSinopsis : ${sinopsis}`
+                megayaa.sendMessage(from, buf, image, {caption: cap})
+                } catch (e) {
+                console.log(e)
+                reply(`Anime ${q} tidak ditemukan, coba cari title lain`)
+                }
+                break
+            case 'dewabatch':
+                try {
+                q = body.slice(11)
+                dew = await axios.get(`https://lindow-python-api.herokuapp.com/api/dewabatch?q=${q}`)
+                var { result, sinopsis, thumb } = dew.data
+                buffer = await getBuffer(thumb)
+                cap = `${result}\n\n${sinopsis}`
+                megayaa.sendMessage(from, buffer, image, {caption: cap})
+                } catch (e) {
+                console.log(e)
+                reply(`Anime ${q} tidak dapat ditemukan`)
+                }
+                break
+            case 'pinterest':
+                getBuffer(`https://lindow-api.herokuapp.com/api/pinterest?search=${body.slice(11)}&apikey=${apikey}`).then((result) => {
+                megayaa.sendMessage(from, result, image)
+                })
                 break
             case 'noprefix':
                 prefix = ''
