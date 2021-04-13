@@ -1,3 +1,5 @@
+/** Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ **/
+
 const { 
   WAConnection,
   MessageType,
@@ -517,7 +519,9 @@ To view list image
 
 *${prefix}getimage*
 Get image from storage
-Usage : ${prefix}getimage Test`
+Usage : ${prefix}getimage Test
+
+Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
                 break
             case 'noprefix':
