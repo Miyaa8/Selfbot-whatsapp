@@ -1,4 +1,8 @@
-/** Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ **/
+/** 
+ * Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ
+ * Follow IG Lindow : https://instagram.com/mccnlight
+ * Oh ya, sorry kalo code nya berantakan, gatau juga padahal di github nya rapih :)
+*/
 
 const { 
   WAConnection,
