@@ -526,6 +526,14 @@ Usage : ${prefix}wikipedia query
 Get info from kusonime
 Usage : ${prefix}kusonime Darling in the franxx
 
+85. *${prefix}ytmp3*
+Download audio from youtube
+Usage : ${prefix}ytmp3 link
+
+86. *${prefix}ytmp4*
+Download audio from youtube
+Usage : ${prefix}ytmp4 link
+
 *Storage Bot*
 
 1. *${prefix}addimage*
@@ -541,6 +549,26 @@ Usage : ${prefix}getimage Test
 
 Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
+                break
+            case 'ytmp3':
+                yt = await axios.get(`https://lindow-python-api.herokuapp.com/api/yta?url=${body.slice(7)}`)
+                var { ext, filesize, result, thumb, title } = yt.data
+                foto = await getBuffer(thumb)
+                if (Number(filesize.split(' MB')[0]) >= 30.00) return megayaa.sendMessage(from, foto, image, {caption: `Title : ${title}\n\nExt : ${ext}\n\nFilesize : ${filesize}\n\nLink : ${result}\n\nUkuran audio diatas 30 MB, Silakan gunakan link download manual`})
+                cap = `Ytmp3 downloader\n\nTitle : ${title}\n\nExt : ${ext}\n\nFilesize : ${filesize}`
+                megayaa.sendMessage(from, foto, image, {caption: cap})
+                au = await getBuffer(result)
+                megayaa.sendMessage(from, au, audio, {mimetype: 'audio/mp4', filename: `${title}.mp3`, quoted: lin, caption: `${title}`})
+                break
+            case 'ytmp4':
+                yt = await axios.get(`https://lindow-python-api.herokuapp.com/api/ytv?url=${body.slice(7)}`)
+                var { ext, filesize, resolution, result, thumb, title } = yt.data
+                foto = await getBuffer(thumb)
+                if (Number(filesize.split(' MB')[0]) >= 30.00) return megayaa.sendMessage(from, foto, image, {caption: `Title : ${title}\n\nExt : ${ext}\n\nFilesize : ${filesize}\n\nResolution: ${resolution}\n\nLink : ${result}\n\nUkuran video diatas 30 MB, Silakan gunakan link download manual`})
+                cap = `Ytmp4 downloader\n\nTitle : ${title}\n\nExt : ${ext}\n\nFilesize : ${filesize}\n\nResolution: ${resolution}`
+                megayaa.sendMessage(from, foto, image, {caption: cap})
+                au = await getBuffer(result)
+                megayaa.sendMessage(from, au, video, {mimetype: 'video/mp4', filename: `${title}.mp4`, quoted: lin, caption: `${title}`})
                 break
             case 'wikipedia':
                 q = body.slice(11)
