@@ -60,7 +60,8 @@ const sleep = async (ms) => {
 fakeimage = fs.readFileSync(`./lib/image/foto2.jpg`)
 fake = 'Simple Selfbot'
 prefix = 'z'
-apikey = 'YOUR APIKEY' // Get in lindow-api.herokuapp.com
+apikey = 'LindowApi' // Free Apikey!
+hit_today = []
 
 megayaa.on('CB:action,,call', async json => {
     const callerId = json[2][0][1].from;
@@ -131,6 +132,7 @@ megayaa.on('chat-update', async(lin) => {
         }
 
         const command = comm
+        hit_today.push(command)
         const args = body.trim().split(/ +/).slice(1)
         const isCmd = cmd
         const meNumber = megayaa.user.jid
@@ -216,7 +218,9 @@ megayaa.on('chat-update', async(lin) => {
             case 'help':
                 textnya = `*${ucapanWaktu}*
 
-*>* for eval
+*> for eval*
+
+*Hit Today : ${hit_today.length}*
 
 1. *${prefix}owner*
 To send contact owner
