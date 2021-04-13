@@ -495,6 +495,10 @@ Get a random kartun adventure
 78. *${prefix}gempa*
 Get info about gempa
 
+79. *${prefix}tinyurl*
+Tools short url
+Usage : ${prefix}tinyurl link
+
 *Storage Bot*
 
 1. *${prefix}addimage*
@@ -508,6 +512,16 @@ To view list image
 Get image from storage
 Usage : ${prefix}getimage Test`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
+                break
+            case 'tinyurl':
+                url = args.join(" ")
+                request(`https://tinyurl.com/api-create.php?url=${url}`, function (error, response, body) {
+                try {
+                    reply(body)
+                  } catch (e) {
+                    reply(e)
+                  }
+                })
                 break
             case 'gempa':
                 const tres = await Gempa()
