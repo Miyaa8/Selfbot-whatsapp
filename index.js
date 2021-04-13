@@ -531,7 +531,7 @@ Download audio from youtube
 Usage : ${prefix}ytmp3 link
 
 86. *${prefix}ytmp4*
-Download audio from youtube
+Download video from youtube
 Usage : ${prefix}ytmp4 link
 
 *Storage Bot*
@@ -558,7 +558,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
                 cap = `Ytmp3 downloader\n\nTitle : ${title}\n\nExt : ${ext}\n\nFilesize : ${filesize}`
                 megayaa.sendMessage(from, foto, image, {caption: cap})
                 au = await getBuffer(result)
-                megayaa.sendMessage(from, au, audio, {mimetype: 'audio/mp4', filename: `${title}.mp3`, quoted: lin, caption: `${title}`})
+                megayaa.sendMessage(from, au, audio, {mimetype: 'audio/mp4', filename: `${title}.mp3`, quoted: lin})
                 break
             case 'ytmp4':
                 yt = await axios.get(`https://lindow-python-api.herokuapp.com/api/ytv?url=${body.slice(7)}`)
