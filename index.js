@@ -499,6 +499,9 @@ Get info about gempa
 Tools short url
 Usage : ${prefix}tinyurl link
 
+80. *${prefix}noprefix*
+Change to no prefix mode
+
 *Storage Bot*
 
 1. *${prefix}addimage*
@@ -512,6 +515,10 @@ To view list image
 Get image from storage
 Usage : ${prefix}getimage Test`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
+                break
+            case 'noprefix':
+                prefix = ''
+                reply('succes')
                 break
             case 'tinyurl':
                 url = args.join(" ")
