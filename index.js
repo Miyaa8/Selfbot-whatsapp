@@ -1,8 +1,11 @@
 /** 
- * Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ
- * Follow IG Lindow : https://instagram.com/lindoww.8
- * Oh ya, sorry kalo code nya berantakan, gatau juga padahal di github nya rapih :)
- */
+ * JOIN GROUP : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ
+ * FOLLOW IG LINDOW : https://instagram.com/lindoww.8
+ * OH YA, SORRY KALO CODE NYA BERANTAKAN, GATAU JUGA PADAHAL DI GITHUB NYA RAPIH :)
+ * ORIGINALY BY : github.com/LoL-Human
+ * RECODE BY : Lindow
+ * YA, JUST KANG RECODE, JANGAN DIBULLY STAH
+ **/
 
 const { 
   WAConnection,
