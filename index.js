@@ -2,7 +2,7 @@
  * Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ
  * Follow IG Lindow : https://instagram.com/lindoww.8
  * Oh ya, sorry kalo code nya berantakan, gatau juga padahal di github nya rapih :)
- */
+*/
 
 const { 
   WAConnection,
@@ -1192,7 +1192,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
 	            megayaa.sendMessage(from, `${bot}`, text, {quoted: { key: { fromMe: false, participant: nomorr+'@s.whatsapp.net', ...(from ? { remoteJid: from } : {}) }, message: { conversation: `${target}` }}})
                 break
             case 'fordward':
-	        megayaa.sendMessage(from, `${budy.slice(10)}`, text, {contextInfo: { forwardingScore: 508, isForwarded: true }})
+	        megayaa.sendMessage(from, `${budy.slice(10)}`, MessageType.text, {contextInfo: { forwardingScore: 508, isForwarded: true }})
                 break
             case 'tagall':
                 if (!isAdmin) return reply('only for admin group')
@@ -1346,8 +1346,8 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
                 break
             case 'stats':
                 if (!isOwner && !itsMe) return await reply('This command only for owner or mega')
-                text = await msg.stats(totalChat)
-                await wa.sendFakeStatus(from, text, "BOT STATS")
+                texxt = await msg.stats(totalChat)
+                await wa.sendFakeStatus(from, texxt, "BOT STATS")
                 break
             case 'block':
                 if (!isOwner && !itsMe) return await reply('This command only for owner or mega')
