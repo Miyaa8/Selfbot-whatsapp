@@ -539,6 +539,10 @@ Usage : ${prefix}ytmp4 link
 Download video from tiktok
 Usage : ${prefix}tiktok link
 
+88. *${prefix}sethelpimg*
+To change thumb in menu/help
+Usage : reply image with caption ${prefix}sethelpimg
+
 *Storage Bot*
 
 1. *${prefix}addimage*
@@ -1332,10 +1336,18 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
             case 'setthumb':
                 if (!isOwner && !itsMe) return await reply('This command only for owner or mega')
                 if (!isQuotedImage && !isImage) return await reply('Gambarnya mana?')
-                media = isQuotedImage ? JSON.parse(JSON.stringify(lin).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lin
-                media = await megayaa.downloadMediaMessage(media)
-                fs.writeFileSync(`./lib/image/foto2.jpg`, media)
-                await wa.sendFakeStatus(from, "*Succes changed image for fakethumb*", "success")
+                media1 = isQuotedImage ? JSON.parse(JSON.stringify(lin).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lin
+                mediaa = await megayaa.downloadMediaMessage(media1)
+                fs.writeFileSync(`./lib/image/foto.jpg`, mediaa)
+                await wa.sendFakeStatus(from, "*Succes changed image for help image*", "success")
+                break
+            case 'sethelpimg':
+                if (!isOwner && !itsMe) return await reply('This command only for owner or mega')
+                if (!isQuotedImage && !isImage) return await reply('Gambarnya mana?')
+                media1 = isQuotedImage ? JSON.parse(JSON.stringify(lin).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lin
+                mediaa = await megayaa.downloadMediaMessage(media1)
+                fs.writeFileSync(`./lib/image/foto2.jpg`, mediaa)
+                await wa.sendFakeStatus(from, "*Succes changed image for help image*", "success")
                 break
             case 'fakethumb':
                 if (!isOwner && !itsMe) return await reply('This command only for owner or mega')
