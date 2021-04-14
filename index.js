@@ -1066,7 +1066,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
             case 'runtime':
 		run = process.uptime()
 		let text = msg.runtime(run)
-	        wa.sendFakeStatus2(from, text, `Runtime bro`)
+	        wa.sendFakeStatus2(from, MessageType.text,`Runtime bro`)
 		break
             case 'unpin':
                 if (!itsMe) return reply('This command only for lindow')
@@ -1170,7 +1170,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
                 await megayaa.chatRead(jid, 'unread')
                     })
 		    var teks = `\`\`\`Successfully unread ${chats.length} chats !\`\`\``
-		    await megayaa.sendMessage(from, teks, text, {quoted: lin})
+		    await megayaa.sendMessage(from, teks, MessageType.text, {quoted: lin})
 		    console.log(chats.length)
 	        break
             case 'readall':
@@ -1180,7 +1180,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
                 await megayaa.chatRead(jid)
                 })
 		var teks = `\`\`\`Successfully read ${chats.length} chats !\`\`\``
-	        await megayaa.sendMessage(from, teks, text, {quoted: lin})
+	        await megayaa.sendMessage(from, teks, MessageType.text, {quoted: lin})
 		console.log(chats.length)
 		break
             case 'fakereply':
@@ -1189,10 +1189,10 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
 		var nomorr = ghh.split("|")[0];
 	        var target = ghh.split("|")[1];
 		var bot = ghh.split("|")[2];
-	            megayaa.sendMessage(from, `${bot}`, text, {quoted: { key: { fromMe: false, participant: nomorr+'@s.whatsapp.net', ...(from ? { remoteJid: from } : {}) }, message: { conversation: `${target}` }}})
+	            megayaa.sendMessage(from, `${bot}`, MessageType.text, {quoted: { key: { fromMe: false, participant: nomorr+'@s.whatsapp.net', ...(from ? { remoteJid: from } : {}) }, message: { conversation: `${target}` }}})
                 break
             case 'fordward':
-	        megayaa.sendMessage(from, `${budy.slice(10)}`, MessageType.text, {contextInfo: { forwardingScore: 508, isForwarded: true }})
+	        megayaa.sendMessage(from, `${budy.slice(10)}`, MessageType.MessageType.text, {contextInfo: { forwardingScore: 508, isForwarded: true }})
                 break
             case 'tagall':
                 if (!isAdmin) return reply('only for admin group')
