@@ -32,6 +32,7 @@ const { exec } = require('child_process');
 const ffmpeg = require('fluent-ffmpeg');
 const axios = require('axios');
 
+const { ssstik } = require("./lib/tiktok.js")
 const { Gempa } = require("./lib/gempa.js");
 const { SearchKartun, Movie, Drama, Action, Adventure } = require("./lib/kartun.js")
 const { herolist } = require("./lib/herolist.js")
@@ -534,6 +535,10 @@ Usage : ${prefix}ytmp3 link
 Download video from youtube
 Usage : ${prefix}ytmp4 link
 
+87. *${prefix}tiktok*
+Download video from tiktok
+Usage : ${prefix}tiktok link
+
 *Storage Bot*
 
 1. *${prefix}addimage*
@@ -549,6 +554,13 @@ Usage : ${prefix}getimage Test
 
 Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
+                break
+            case 'tiktok':
+                url = args.join(" ")
+                result = await ssstik(url)
+                console.log(result)
+                buf = await getBuffer(`${result.videonowm}`)
+                megayaa.sendMessage(from, buf, video, {mimetype: 'video/mp4', filename: `tiktok.mp4`, quoted: lin, caption: `${result.text}\n\nUrl music : ${result.music}`})
                 break
             case 'ytmp3':
                 yt = await axios.get(`https://lindow-python-api.herokuapp.com/api/yta?url=${body.slice(7)}`)
