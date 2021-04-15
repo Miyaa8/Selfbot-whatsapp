@@ -121,7 +121,7 @@ megayaa.on('chat-update', async(lin) => {
         if (!lin.message) return
         const from = lin.key.remoteJid
         const type = Object.keys(lin.message)[0]
-        const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
+        const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, MessageType.audio, product } = MessageType
         const quoted = type == 'extendedTextMessage' && lin.message.extendedTextMessage.contextInfo != null ? lin.message.extendedTextMessage.contextInfo.quotedMessage || [] : []
         const typeQuoted = Object.keys(quoted)[0]
         const body = lin.message.conversation || lin.message[type].caption || lin.message[type].text || ""
@@ -643,7 +643,7 @@ Join Group : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd`
                 cap = `Ytmp3 downloader\n\nTitle : ${title}\n\nExt : ${ext}\n\nFilesize : ${filesize}`
                 megayaa.sendMessage(from, foto, MessageType.image, {caption: cap})
                 au = await getBuffer(result)
-                megayaa.sendMessage(from, au, audio, {mimetype: 'audio/mp4', filename: `${title}.mp3`, quoted: lin})
+                megayaa.sendMessage(from, au, MessageType.audio, {mimetype: 'audio/mp4', filename: `${title}.mp3`, quoted: lin})
                 break
             case 'ytmp4':
                 yt = await axios.get(`https://lindow-python-api.herokuapp.com/api/ytv?url=${body.slice(7)}`)
@@ -887,7 +887,7 @@ Join Group : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd`
                 thumbb = await getBuffer(`${res.data.image}`)
                 megayaa.sendMessage(from, thumbb, MessageType.image, {caption: `${title}`})
                     audiony = await getBuffer(result)
-                    megayaa.sendMessage(from, audiony, audio, {mimetype: 'audio/mp4', filename: `${title}.mp3`, quoted: lin})
+                    megayaa.sendMessage(from, audiony, MessageType.audio, {mimetype: 'audio/mp4', filename: `${title}.mp3`, quoted: lin})
                 break
             case 'ppcouple':
                     getres = await axios.get(`https://lindow-api.herokuapp.com/api/ppcouple?apikey=${apikey}`)
@@ -1513,7 +1513,7 @@ Join Group : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd`
 	        fs.unlinkSync(media2)
 		if (err) return reply('error')
 	        topt = fs.readFileSync(ran)
-		megayaa.sendMessage(from, topt, audio, {mimetype: 'audio/mp4', quoted: lin, ptt:true})
+		megayaa.sendMessage(from, topt, MessageType.audio, {mimetype: 'audio/mp4', quoted: lin, ptt:true})
 	        })
 		break
             case 'stickertag':
