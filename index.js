@@ -560,6 +560,9 @@ Get random news CNN
 92. *${prefix}covidindo*
 Get info about covid Indonesia
 
+93. *${prefix}otakuongoing*
+Get Info About otakudesu OnGoing
+
 *Storage Bot*
 
 1. *${prefix}addimage*
@@ -573,8 +576,19 @@ To view list image
 Get image from storage
 Usage : ${prefix}getimage Test
 
-Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
+Join Group : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
+            reply(`Join Group : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd`)
+                break
+            case 'otakuongoing':
+                o = await onGoing()
+                console.log(o)
+                ot = 'Ongoing Otakudesu'
+                for (let i = 0; i < o.length; i++) {
+                  ot += `\n\nJudul : ${o[i].judul}\nEpisode : ${o[i].eps}\nEps berikutnya pada hari : ${o[i].hri}\nTanggal : ${o[i].tgl}\n\nImage : ${o[i].thumb}`
+                }
+                buff = await getBuffer(o[0].thumb)
+                megayaa.sendMessage(from, buff, MessageType.image, {caption: ot})
                 break
             case 'covidindo':
                 c = await covid()
