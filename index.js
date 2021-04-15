@@ -224,8 +224,8 @@ megayaa.on('chat-update', async(lin) => {
         
         switch (command) {
             case 'cnn':
-              var result = await cnn()
-              console.log(result)
+               var result = await cnn()
+               console.log(result)
                 cn = 'CNN NEWS'
                 for (let i = 0; i < result.length; i++) {
                   cn += `\n\nTitle : ${result[i].judul}\nLink : ${result[i].link}\nImage: ${result[i].thumb}`
@@ -556,6 +556,9 @@ Usage : ${prefix}tiktok link
 88. *${prefix}sethelpimg*
 To change thumb in menu/help
 Usage : reply image with caption ${prefix}sethelpimg
+
+89. *${prefix}cnn*
+Get a random news CNN
 
 *Storage Bot*
 
