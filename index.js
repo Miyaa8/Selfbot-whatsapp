@@ -35,6 +35,7 @@ const { exec } = require('child_process');
 const ffmpeg = require('fluent-ffmpeg');
 const axios = require('axios');
 
+const { covid } = require("./lib/covid.js")
 const { downAndro1, searchAndro1 } = require("./lib/andro.js")
 const { cnn } = require("./lib/cnn.js")
 const { ssstik } = require("./lib/tiktok.js")
@@ -555,6 +556,9 @@ Usage : ${prefix}downandro1 https://an1.com/1628-sonic-dash-mod.html
 91. *${prefix}cnn*
 Get random news CNN
 
+92. *${prefix}covidindo*
+Get info about covid Indonesia
+
 *Storage Bot*
 
 1. *${prefix}addimage*
@@ -570,6 +574,11 @@ Usage : ${prefix}getimage Test
 
 Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
+                break
+            case 'covidindo':
+                c = await covid()
+                var { kasus, kematian, sembuh } = c[0]
+                reply(`Kasus : ${kasus}\n\nKematian : ${kematian}\n\nSembuh : ${sembuh}`)
                 break
             case 'downandro1':
                 linkdown = args.join(" ")
