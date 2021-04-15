@@ -35,6 +35,7 @@ const { exec } = require('child_process');
 const ffmpeg = require('fluent-ffmpeg');
 const axios = require('axios');
 
+const { downAndro1, searchAndro1 } = require("./lib/andro.js")
 const { cnn } = require("./lib/cnn.js")
 const { ssstik } = require("./lib/tiktok.js")
 const { Gempa } = require("./lib/gempa.js");
@@ -223,9 +224,29 @@ megayaa.on('chat-update', async(lin) => {
         if (isGroup && isCmd) console.log(chalk.whiteBright("├"), chalk.keyword("aqua")("[ COMMAND ]"), chalk.whiteBright(typeMessage), chalk.greenBright("from"), chalk.keyword("yellow")(senderNumber), chalk.greenBright("in"), chalk.keyword("yellow")(groupName))
         
         switch (command) {
+            case 'downandro1':
+              linkdown = args.join(" ")
+              result = await downAndro1(linkdown)
+              var { judul, dev, andro, versi, genre, updated, link, size, install, rated } = result[0]
+              console.log(result)
+              caption = `Title : ${judul}\n\nDeveloper : ${dev}\nAndroid : ${andro}\nVersion : ${versi}\nGenre : ${genre}\nUpdate : ${updated}\nLink : ${link}\nSize : ${size}\nInstall : ${install}\nRating : ${rated}`
+              buff = await getBuffer(result[0].thumb)
+              megayaa.sendMessage(from, buff, MessageType.image, {caption: caption})
+              break
+            case 'searchandro1':
+              aplikasi = body.slice(14)
+              result = await searchAndro1(aplikasi)
+              console.log(result)
+              an = 'ANDROID1 SEARCH'
+                for (let i = 0; i < result.length; i++) {
+                  an += `\n\nTitle : ${result[i].judul}\n\nLink : ${result[i].link}\n\n=======================`
+                }
+                buff = await getBuffer(result[0].thumb)
+                megayaa.sendMessage(from, buff, MessageType.image, {caption: an})
+              break
             case 'cnn':
-               var result = await cnn()
-               console.log(result)
+              var result = await cnn()
+              console.log(result)
                 cn = 'CNN NEWS'
                 for (let i = 0; i < result.length; i++) {
                   cn += `\n\nTitle : ${result[i].judul}\nLink : ${result[i].link}\nImage: ${result[i].thumb}`
@@ -556,9 +577,6 @@ Usage : ${prefix}tiktok link
 88. *${prefix}sethelpimg*
 To change thumb in menu/help
 Usage : reply image with caption ${prefix}sethelpimg
-
-89. *${prefix}cnn*
-Get a random news CNN
 
 *Storage Bot*
 
