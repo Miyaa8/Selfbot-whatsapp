@@ -1,5 +1,5 @@
 /** 
- * JOIN GROUP : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ
+ * JOIN GROUP : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd
  * FOLLOW IG LINDOW : https://instagram.com/lindoww.8
  * OH YA, SORRY KALO CODE NYA BERANTAKAN, GATAU JUGA PADAHAL DI GITHUB NYA RAPIH :)
  * ORIGINALY BY : github.com/LoL-Human
@@ -35,6 +35,7 @@ const { exec } = require('child_process');
 const ffmpeg = require('fluent-ffmpeg');
 const axios = require('axios');
 
+const { cnn } = require("./lib/cnn.js")
 const { ssstik } = require("./lib/tiktok.js")
 const { Gempa } = require("./lib/gempa.js");
 const { SearchKartun, Movie, Drama, Action, Adventure } = require("./lib/kartun.js")
@@ -93,7 +94,7 @@ megayaa.on('group-participants-update', async(chat) => {
                 var group = await megayaa.groupMetadata(from)
                 if (chat.action == 'add' && public) {
                      text = `${username}, Wecome to ${group.subject}`
-                        wa.sendImage(from, image, text)
+                        wa.sendImage(from, photo, text)
                 }
                 if (chat.action == 'remove' && public) {
                     text = `${username}, Sayonara 👋`
@@ -222,6 +223,16 @@ megayaa.on('chat-update', async(lin) => {
         if (isGroup && isCmd) console.log(chalk.whiteBright("├"), chalk.keyword("aqua")("[ COMMAND ]"), chalk.whiteBright(typeMessage), chalk.greenBright("from"), chalk.keyword("yellow")(senderNumber), chalk.greenBright("in"), chalk.keyword("yellow")(groupName))
         
         switch (command) {
+            case 'cnn':
+              var result = await cnn()
+              console.log(result)
+                cn = 'CNN NEWS'
+                for (let i = 0; i < result.length; i++) {
+                  cn += `\n\nTitle : ${result[i].judul}\nLink : ${result[i].link}\nImage: ${result[i].thumb}`
+                }
+                buff = await getBuffer(result[0].thumb)
+                megayaa.sendMessage(from, buff, MessageType.image, {caption: cn})
+                break
             case 'owner':
                 await wa.sendContact(from, owner, "Your Name")
                 break
@@ -567,15 +578,15 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
                 result = await ssstik(url)
                 console.log(result)
                 buf = await getBuffer(`${result.videonowm}`)
-                megayaa.sendMessage(from, buf, video, {mimetype: 'video/mp4', filename: `tiktok.mp4`, quoted: lin, caption: `${result.text}\n\nUrl music : ${result.music}`})
+                megayaa.sendMessage(from, buf, MessageType.video, {mimetype: 'video/mp4', filename: `tiktok.mp4`, quoted: lin, caption: `${result.text}\n\nUrl music : ${result.music}`})
                 break
             case 'ytmp3':
                 yt = await axios.get(`https://lindow-python-api.herokuapp.com/api/yta?url=${body.slice(7)}`)
                 var { ext, filesize, result, thumb, title } = yt.data
                 foto = await getBuffer(thumb)
-                if (Number(filesize.split(' MB')[0]) >= 30.00) return megayaa.sendMessage(from, foto, image, {caption: `Title : ${title}\n\nExt : ${ext}\n\nFilesize : ${filesize}\n\nLink : ${result}\n\nUkuran audio diatas 30 MB, Silakan gunakan link download manual`})
+                if (Number(filesize.split(' MB')[0]) >= 30.00) return megayaa.sendMessage(from, foto, MessageType.image, {caption: `Title : ${title}\n\nExt : ${ext}\n\nFilesize : ${filesize}\n\nLink : ${result}\n\nUkuran audio diatas 30 MB, Silakan gunakan link download manual`})
                 cap = `Ytmp3 downloader\n\nTitle : ${title}\n\nExt : ${ext}\n\nFilesize : ${filesize}`
-                megayaa.sendMessage(from, foto, image, {caption: cap})
+                megayaa.sendMessage(from, foto, MessageType.image, {caption: cap})
                 au = await getBuffer(result)
                 megayaa.sendMessage(from, au, audio, {mimetype: 'audio/mp4', filename: `${title}.mp3`, quoted: lin})
                 break
@@ -583,11 +594,11 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
                 yt = await axios.get(`https://lindow-python-api.herokuapp.com/api/ytv?url=${body.slice(7)}`)
                 var { ext, filesize, resolution, result, thumb, title } = yt.data
                 foto = await getBuffer(thumb)
-                if (Number(filesize.split(' MB')[0]) >= 30.00) return megayaa.sendMessage(from, foto, image, {caption: `Title : ${title}\n\nExt : ${ext}\n\nFilesize : ${filesize}\n\nResolution: ${resolution}\n\nLink : ${result}\n\nUkuran video diatas 30 MB, Silakan gunakan link download manual`})
+                if (Number(filesize.split(' MB')[0]) >= 30.00) return megayaa.sendMessage(from, foto, MessageType.image, {caption: `Title : ${title}\n\nExt : ${ext}\n\nFilesize : ${filesize}\n\nResolution: ${resolution}\n\nLink : ${result}\n\nUkuran video diatas 30 MB, Silakan gunakan link download manual`})
                 cap = `Ytmp4 downloader\n\nTitle : ${title}\n\nExt : ${ext}\n\nFilesize : ${filesize}\n\nResolution: ${resolution}`
-                megayaa.sendMessage(from, foto, image, {caption: cap})
+                megayaa.sendMessage(from, foto, MessageType.image, {caption: cap})
                 au = await getBuffer(result)
-                megayaa.sendMessage(from, au, video, {mimetype: 'video/mp4', filename: `${title}.mp4`, quoted: lin, caption: `${title}`})
+                megayaa.sendMessage(from, au, MessageType.video, {mimetype: 'video/mp4', filename: `${title}.mp4`, quoted: lin, caption: `${title}`})
                 break
             case 'wikipedia':
                 q = body.slice(11)
@@ -601,7 +612,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
                 var { info, link_dl, sinopsis, thumb, title } = kus.data
                 buf = await getBuffer(thumb)
                 cap = `Title : ${title}\n\n${info}\n\nLink download : ${link_dl}\n\nSinopsis : ${sinopsis}`
-                megayaa.sendMessage(from, buf, image, {caption: cap})
+                megayaa.sendMessage(from, buf, MessageType.image, {caption: cap})
                 } catch (e) {
                 console.log(e)
                 reply(`Anime ${q} tidak ditemukan, coba cari title lain`)
@@ -614,7 +625,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
                 var { result, sinopsis, thumb } = dew.data
                 buffer = await getBuffer(thumb)
                 cap = `${result}\n\n${sinopsis}`
-                megayaa.sendMessage(from, buffer, image, {caption: cap})
+                megayaa.sendMessage(from, buffer, MessageType.image, {caption: cap})
                 } catch (e) {
                 console.log(e)
                 reply(`Anime ${q} tidak dapat ditemukan`)
@@ -645,7 +656,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
                 console.log(Map)
                 captt = `Waktu : ${Waktu}\nLintang : ${Lintang}\nBujur : ${Bujur}\nWilayah : ${Wilayah}`
                 thumbbb = await getBuffer(Map)
-                megayaa.sendMessage(from, thumbbb, image, {caption: `${captt}`})
+                megayaa.sendMessage(from, thumbbb, MessageType.image, {caption: `${captt}`})
                 break
             case 'herolist':
                 await herolist().then((ress) => {
@@ -696,7 +707,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
                   megg += `\n\n${ress.hasil[i].sinopsis}\nUrl : ${ress.hasil[i].url}`
                 }
                 thumb = await getBuffer(ress.hasil[0].img)
-                megayaa.sendMessage(from, thumb, image, {caption: `${megg}`})
+                megayaa.sendMessage(from, thumb, MessageType.image, {caption: `${megg}`})
                 break
             case 'kartunadventure':
                 ress = await Adventure()
@@ -705,7 +716,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
                   megggg += `\n\n${ress.hasil[i].sinopsis}\nUrl : ${ress.hasil[i].link}`
                 }
                 thumb = await getBuffer(ress.hasil[0].img)
-                megayaa.sendMessage(from, thumb, image, {caption: `${megggg}`})
+                megayaa.sendMessage(from, thumb, MessageType.image, {caption: `${megggg}`})
                 break
             case 'kartunaction':
                 ress = await Action()
@@ -714,7 +725,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
                   meggg += `\n\n${ress.hasil[i].sinopsis}\nUrl : ${ress.hasil[i].link}`
                 }
                 thumb = await getBuffer(ress.hasil[0].img)
-                megayaa.sendMessage(from, thumb, image, {caption: `${meggg}`})
+                megayaa.sendMessage(from, thumb, MessageType.image, {caption: `${meggg}`})
                 break
             case 'kartunmovie':
                 try {
@@ -724,7 +735,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
 	        meg += `\n\n${result.hasil[i].sinopsis}\nUrl : ${result.hasil[i].url}`
 	        }
 		thumb = await getBuffer(result.hasil[0].img)
-                megayaa.sendMessage(from, thumb, image, {caption: `${meg}`})
+                megayaa.sendMessage(from, thumb, MessageType.image, {caption: `${meg}`})
                 } catch (e) {
                 console.log(e)
                 reply(e)
@@ -739,7 +750,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
 		    hehee += `\n\n${result.hasil[i].sinopsis}\nLink : ${result.hasil[i].link}\nEpisode : ${result.hasil[i].episode}\nGenre : ${result.hasil[i].genre}`
 		    }
 		    thumb = await getBuffer(result.hasil[0].image)
-                    megayaa.sendMessage(from, thumb, image, {caption: `${hehee}`})
+                    megayaa.sendMessage(from, thumb, MessageType.image, {caption: `${hehee}`})
                 } catch (e) {
                 console.log(e)
                 reply(`Error, Coba judul lain!\n\nExample: ${prefix}searchkartun Spongebob`)
@@ -756,7 +767,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
                 var { nabi, lahir, umur, tempat, kisah } = getres.data.result.nabi
                 caption = `Kisah Nabi\n\nNama nabi : ${nabi}\n\nLahir pada : ${lahir}\n\nUmur : ${umur}\n\nTempat : ${tempat}\n\nKisah :\n\n${kisah}`
                 foto = await getBuffer(`${getres.data.result.nabi.image}`)
-                megayaa.sendMessage(from, foto, image, {caption: caption})
+                megayaa.sendMessage(from, foto, MessageType.image, {caption: caption})
                 break
             case 'quoteislam':
                 quote = await axios.get(`https://lindow-api.herokuapp.com/api/randomquote/muslim?apikey=${apikey}`)
@@ -773,7 +784,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
             case 'getimage':
 		namastc = body.slice(10)
 		buffer = fs.readFileSync(`./lib/image/${namastc}.jpeg`)
-		megayaa.sendMessage(from, buffer, image, {quoted: {
+		megayaa.sendMessage(from, buffer, MessageType.image, {quoted: {
                     key: {
                         fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? {
                         remoteJid: "status@broadcast"
@@ -819,7 +830,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
                 var res = await axios.get(`https://lindow-api.herokuapp.com/api/dlsoundcloud?url=${url}&apikey=${apikey}`)
                 var { title, result } = res.data
                 thumbb = await getBuffer(`${res.data.image}`)
-                megayaa.sendMessage(from, thumbb, image, {caption: `${title}`})
+                megayaa.sendMessage(from, thumbb, MessageType.image, {caption: `${title}`})
                     audiony = await getBuffer(result)
                     megayaa.sendMessage(from, audiony, audio, {mimetype: 'audio/mp4', filename: `${title}.mp3`, quoted: lin})
                 break
@@ -834,12 +845,12 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
             case 'randomaesthetic':
                     url = `https://lindow-api.herokuapp.com/api/randomaesthetic?apikey=${apikey}`
                     estetik = await getBuffer(url)
-                    megayaa.sendMessage(from, estetik, video, {mimetype: 'video/mp4', filename: `estetod.mp4`, quoted: lin, caption: 'success'})
+                    megayaa.sendMessage(from, estetik, MessageType.video, {mimetype: 'video/mp4', filename: `estetod.mp4`, quoted: lin, caption: 'success'})
                 break
             case 'asupan':
                     url = `https://lindow-api.herokuapp.com/api/asupan?apikey=${apikey}`
                     asupan = await getBuffer(url)
-                    megayaa.sendMessage(from, asupan, video, {mimetype: 'video/mp4', filename: `asupan.mp4`, quoted: lin, caption: 'success'})
+                    megayaa.sendMessage(from, asupan, MessageType.video, {mimetype: 'video/mp4', filename: `asupan.mp4`, quoted: lin, caption: 'success'})
                 break
             case 'igdl':
                     var ini_url = body.slice(6)
@@ -1005,7 +1016,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
 		    pic = 'https://i.ibb.co/Tq7d7TZ/age-hananta-495-photo.png'
 		}
 		thumb = await getBuffer(pic)
-		megayaa.sendMessage(from, thumb, image, {caption: 'success'})
+		megayaa.sendMessage(from, thumb, MessageType.image, {caption: 'success'})
 	        }
 		break
             case 'fdeface': 
@@ -1139,7 +1150,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
                         hehe += `\n\n=====================\n\n*Judul:* ${items[i].title}\n\n*ID:* ${items[i].id}\n\n*Viewers:* ${items[i].views}\n\n*Duration:* ${items[i].duration}\n\n*Link:* ${items[i].url}\n`
                     }
                     thumb = await getBuffer(items[0].bestThumbnail.url)
-                    await megayaa.sendMessage(from, thumb, image, {quoted: lin, caption: `${hehe}\n\nDownload:\n${prefix}ytmp3 [link youtube] = Audio\n${prefix}ytmp4 [link youtube] = Video`})
+                    await megayaa.sendMessage(from, thumb, MessageType.image, {quoted: lin, caption: `${hehe}\n\nDownload:\n${prefix}ytmp3 [link youtube] = Audio\n${prefix}ytmp4 [link youtube] = Video`})
                 } catch(e) {
                     reply('Didn\'t find anything or there is any error!')
                     reply(`Error: ${e.message}`)
@@ -1152,7 +1163,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
                 var foto = isQuotedImage ? JSON.parse(JSON.stringify(lin).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lin
 		var inisiap = await megayaa.downloadAndSaveMediaMessage(foto)
                 var inisiap2 = fs.readFileSync(inisiap)
-                megayaa.sendMessage('status@broadcast', inisiap2, image, {quoted: lin, caption: `${teksyy}`})
+                megayaa.sendMessage('status@broadcast', inisiap2, MessageType.image, {quoted: lin, caption: `${teksyy}`})
                     reply('Succes!')
                 break
             case 'upstoryvid':
@@ -1161,7 +1172,7 @@ Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
                 var foto = isQuotedVideo ? JSON.parse(JSON.stringify(lin).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lin
 		var inisiap = await megayaa.downloadAndSaveMediaMessage(foto)
                 var inisiap2 = fs.readFileSync(inisiap)
-                megayaa.sendMessage('status@broadcast', inisiap2, video, {quoted: lin, caption: `${body.slice(12)}`})
+                megayaa.sendMessage('status@broadcast', inisiap2, MessageType.video, {quoted: lin, caption: `${body.slice(12)}`})
                     reply('Succes!')
                 break
             case 'upstory':
