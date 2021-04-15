@@ -552,6 +552,9 @@ Usage : ${prefix}searchandro1 sonic dash
 90. *${prefix}downandro1
 Usage : ${prefix}downandro1 https://an1.com/1628-sonic-dash-mod.html
 
+91. *${prefix}cnn*
+Get random news CNN
+
 *Storage Bot*
 
 1. *${prefix}addimage*
