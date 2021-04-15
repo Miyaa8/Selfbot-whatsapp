@@ -35,6 +35,7 @@ const { exec } = require('child_process');
 const ffmpeg = require('fluent-ffmpeg');
 const axios = require('axios');
 
+const { onGoing } = require("./lib/otakudesu.js")
 const { covid } = require("./lib/covid.js")
 const { downAndro1, searchAndro1 } = require("./lib/andro.js")
 const { cnn } = require("./lib/cnn.js")
