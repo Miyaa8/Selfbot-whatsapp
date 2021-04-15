@@ -224,39 +224,6 @@ megayaa.on('chat-update', async(lin) => {
         if (isGroup && isCmd) console.log(chalk.whiteBright("├"), chalk.keyword("aqua")("[ COMMAND ]"), chalk.whiteBright(typeMessage), chalk.greenBright("from"), chalk.keyword("yellow")(senderNumber), chalk.greenBright("in"), chalk.keyword("yellow")(groupName))
         
         switch (command) {
-            case 'downandro1':
-              linkdown = args.join(" ")
-              result = await downAndro1(linkdown)
-              var { judul, dev, andro, versi, genre, updated, link, size, install, rated } = result[0]
-              console.log(result)
-              caption = `Title : ${judul}\n\nDeveloper : ${dev}\nAndroid : ${andro}\nVersion : ${versi}\nGenre : ${genre}\nUpdate : ${updated}\nLink : ${link}\nSize : ${size}\nInstall : ${install}\nRating : ${rated}`
-              buff = await getBuffer(result[0].thumb)
-              megayaa.sendMessage(from, buff, MessageType.image, {caption: caption})
-              break
-            case 'searchandro1':
-              aplikasi = body.slice(14)
-              result = await searchAndro1(aplikasi)
-              console.log(result)
-              an = 'ANDROID1 SEARCH'
-                for (let i = 0; i < result.length; i++) {
-                  an += `\n\nTitle : ${result[i].judul}\n\nLink : ${result[i].link}\n\n=======================`
-                }
-                buff = await getBuffer(result[0].thumb)
-                megayaa.sendMessage(from, buff, MessageType.image, {caption: an})
-              break
-            case 'cnn':
-              var result = await cnn()
-              console.log(result)
-                cn = 'CNN NEWS'
-                for (let i = 0; i < result.length; i++) {
-                  cn += `\n\nTitle : ${result[i].judul}\nLink : ${result[i].link}\nImage: ${result[i].thumb}`
-                }
-                buff = await getBuffer(result[0].thumb)
-                megayaa.sendMessage(from, buff, MessageType.image, {caption: cn})
-                break
-            case 'owner':
-                await wa.sendContact(from, owner, "Your Name")
-                break
             case 'help':
                 textnya = `*${ucapanWaktu}*
 
@@ -578,6 +545,13 @@ Usage : ${prefix}tiktok link
 To change thumb in menu/help
 Usage : reply image with caption ${prefix}sethelpimg
 
+89. *${prefix}searchandro1
+Get info android1
+Usage : ${prefix}searchandro1 sonic dash
+
+90. *${prefix}downandro1
+Usage : ${prefix}downandro1 https://an1.com/1628-sonic-dash-mod.html
+
 *Storage Bot*
 
 1. *${prefix}addimage*
@@ -593,6 +567,39 @@ Usage : ${prefix}getimage Test
 
 Join Group : https://chat.whatsapp.com/HzsrDmMZ1sFFlac2JNhccJ`
             wa.FakeStatusImgForwarded(from, fakeimage, textnya, fake)
+                break
+            case 'downandro1':
+                linkdown = args.join(" ")
+                result = await downAndro1(linkdown)
+                var { judul, dev, andro, versi, genre, updated, link, size, install, rated } = result[0]
+                console.log(result)
+                caption = `Title : ${judul}\n\nDeveloper : ${dev}\nAndroid : ${andro}\nVersion : ${versi}\nGenre : ${genre}\nUpdate : ${updated}\nLink : ${link}\nSize : ${size}\nInstall : ${install}\nRating : ${rated}`
+                buff = await getBuffer(result[0].thumb)
+                megayaa.sendMessage(from, buff, MessageType.image, {caption: caption})
+                break
+            case 'searchandro1':
+                aplikasi = body.slice(14)
+                result = await searchAndro1(aplikasi)
+                console.log(result)
+                an = 'ANDROID1 SEARCH'
+                for (let i = 0; i < result.length; i++) {
+                  an += `\n\nTitle : ${result[i].judul}\n\nLink : ${result[i].link}\n\n=======================`
+                }
+                buff = await getBuffer(result[0].thumb)
+                megayaa.sendMessage(from, buff, MessageType.image, {caption: an})
+                break
+            case 'cnn':
+                var result = await cnn()
+                console.log(result)
+                cn = 'CNN NEWS'
+                for (let i = 0; i < result.length; i++) {
+                  cn += `\n\nTitle : ${result[i].judul}\nLink : ${result[i].link}\nImage: ${result[i].thumb}`
+                }
+                buff = await getBuffer(result[0].thumb)
+                megayaa.sendMessage(from, buff, MessageType.image, {caption: cn})
+                break
+            case 'owner':
+                await wa.sendContact(from, owner, "Your Name")
                 break
             case 'tiktok':
                 url = args.join(" ")
