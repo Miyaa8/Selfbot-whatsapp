@@ -6,7 +6,6 @@
  * RECODE BY : LINDOW & MEGA & FAZONE
  * YA, JUST KANG RECODE, JANGAN DIBULLY STAH
  **/
-//tes
 
 const { 
   WAConnection,
