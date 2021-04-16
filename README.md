@@ -118,3 +118,4 @@ Edit the required value in [`config.json`](https://github.com/Megaa4282/Simple-s
 * [`Baileys`](https://github.com/adiwajshing/Baileys)
 * [`LolHuman`](https://github.com/LoL-Human)
 * [`Lindow`](https://github.com/mccnlight)
+* [`Fazone`](https://github.com/fazonetea)
