@@ -564,6 +564,12 @@ Get info about covid Indonesia
 93. *${prefix}otakuongoing*
 Get Info About otakudesu OnGoing
 
+94. *${prefix}sfilesearch*
+Search files in Sfile Mobi
+
+95. *${prefix}sfiledl*
+Download files Sfile with link
+
 *Storage Bot*
 
 1. *${prefix}addimage*
@@ -636,6 +642,21 @@ Join Group : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd`
                 buf = await getBuffer(`${result.videonowm}`)
                 megayaa.sendMessage(from, buf, MessageType.video, {mimetype: 'video/mp4', filename: `tiktok.mp4`, quoted: lin, caption: `${result.text}\n\nUrl music : ${result.music}`})
                 break
+	    case 'sfilesearch':
+                respo = await axios.get(`https://fzn-gaz.herokuapp.com/api/sfile?search=${body.slice(13)}`)
+            	result = respo.data.result
+		let pilem = `*「 SFILE SEARCH 」*\n\n*Hasil Pencarian : ${body.slice(13)}*\n\n─────────────────`
+		for (let i = 0; i < result.length; i++) {
+			pilem += `\n\nTitle : *${result[i].title}*\nLink : *${result[i].link}*`
+		}
+		reply(pilem, result[0])
+                break	
+	    case 'sfiledl':
+                respo = await axios.get(`https://fzn-gaz.herokuapp.com/api/sfiledl?url=${args.join(" ")}`);
+		gaslah = respo.data
+		filer = await getBuffer(gaslah.result)
+                megayaa.sendMessage(from, filer, MessageType.document, {mimetype: 'application/octet-stream', filename: `${gaslah.title}`, quoted: lin});
+                break			
             case 'ytmp3':
                 yt = await axios.get(`https://lindow-python-api.herokuapp.com/api/yta?url=${body.slice(7)}`)
                 var { ext, filesize, result, thumb, title } = yt.data
