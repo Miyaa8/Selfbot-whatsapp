@@ -121,7 +121,7 @@ megayaa.on('chat-update', async(lin) => {
         if (!lin.message) return
         const from = lin.key.remoteJid
         const type = Object.keys(lin.message)[0]
-        const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, MessageType.audio, product } = MessageType
+        const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
         const quoted = type == 'extendedTextMessage' && lin.message.extendedTextMessage.contextInfo != null ? lin.message.extendedTextMessage.contextInfo.quotedMessage || [] : []
         const typeQuoted = Object.keys(quoted)[0]
         const body = lin.message.conversation || lin.message[type].caption || lin.message[type].text || ""
