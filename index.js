@@ -144,6 +144,24 @@ megayaa.on('chat-update', async(lin) => {
         const reply = async(teks) => {
             await megayaa.sendMessage(from, teks, MessageType.text, { quoted: lin })
         }
+	const uploadImages = (filePath) => {
+			return new Promise(async (resolve, reject) => {
+            const fileData = fs.readFileSync(filePath)
+            const form = new FormData()
+            form.append('file', fileData, 'tmp.png')
+            fetch('https://telegra.ph/upload', {
+                method: 'POST',
+                body: form
+            })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.error) return reject(res.error)
+                    resolve('https://telegra.ph' + res[0].src)
+                })
+                .then(() => fs.unlinkSync(filePath))
+                .catch(err => reject(err))
+			})
+			}
 
         const command = comm
         hit_today.push(command)
@@ -569,6 +587,9 @@ Search files in Sfile Mobi
 95. *${prefix}sfiledl*
 Download files Sfile with link
 
+96. *${prefix}smeme*
+Make sticker meme with a reply photo
+
 *Storage Bot*
 
 1. *${prefix}addimage*
@@ -655,7 +676,31 @@ Join Group : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd`
 		gaslah = respo.data
 		filer = await getBuffer(gaslah.result)
                 megayaa.sendMessage(from, filer, MessageType.document, {mimetype: 'application/octet-stream', filename: `${gaslah.title}`, quoted: lin});
-                break			
+                break	
+		case 'smeme':
+                    gh = body.slice(7).replace(/ /g, '%20')
+                    wo1 = gh.split("|")[0];
+                    wo2 = gh.split("|")[1];
+                    if ((isMedia && !lin.message.videoMessage || isQuotedImage)) {
+                    jars = isQuotedImage ? JSON.parse(JSON.stringify(lin).replace('quotedM','m')).message.extendedTextMessage.contextInfo : lin
+                    wors = await megayaa.downloadAndSaveMediaMessage(jars)
+		    datae = await imageToBase64(JSON.stringify(wors).replace(/\"/gi, ''))
+                    fs.writeFileSync('smeme.jpeg', datae, 'base64')
+		    anu = await uploadImages('smeme.jpeg')
+                    ranp = getRandom('.gif')
+                    rano = getRandom('.webp')
+                    baleg = `https://api.memegen.link/images/custom/${wo1}/${wo2}.png?background=${anu}`
+                    exec(`wget ${baleg} -O ${ranp} && ffmpeg -i ${ranp} -vcodec libwebp -filter:v fps=fps=20 -lossless 1 -loop 0 -preset default -an -vsync 0 -s 512:512 ${rano}`, (err) => {
+                    fs.unlinkSync(ranp)
+                    if (err) return reply('Error Make Sticker')
+		    meme = fs.readFileSync(rano)
+                    megayaa.sendMessage(from, meme, MessageType.sticker, {quoted: lin})
+                    fs.unlinkSync(rano)
+					})
+                    } else {
+                    reply('Gunakan foto!')
+                    }
+                    break	
             case 'ytmp3':
                 yt = await axios.get(`https://lindow-python-api.herokuapp.com/api/yta?url=${body.slice(7)}`)
                 var { ext, filesize, result, thumb, title } = yt.data
@@ -1445,7 +1490,7 @@ Join Group : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd`
                 media = isQuotedImage ? JSON.parse(JSON.stringify(lin).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lin
                 media = await megayaa.downloadMediaMessage(media)
                 await wa.sendFakeThumb(from, media)
-                break
+                break	
             case 'stats':
                 if (!isOwner && !itsMe) return await reply('This command only for owner or mega')
                 texxt = await msg.stats(totalChat)
