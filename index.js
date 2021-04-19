@@ -34,6 +34,7 @@ const fs = require('fs');
 const { exec } = require('child_process');
 const ffmpeg = require('fluent-ffmpeg');
 const axios = require('axios');
+const fetch = require('node-fetch');
 
 const { onGoing } = require("./lib/otakudesu.js")
 const { covid } = require("./lib/covid.js")
