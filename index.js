@@ -688,18 +688,8 @@ Join Group : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd`
 		    datae = await imageToBase64(JSON.stringify(wors).replace(/\"/gi, ''))
                     fs.writeFileSync('smeme.jpeg', datae, 'base64')
 		    anu = await uploadImages('smeme.jpeg')
-                    ranp = getRandom('.gif')
-                    rano = getRandom('.webp')
-                    baleg = `https://api.memegen.link/images/custom/${wo1}/${wo2}.png?background=${anu}`
-                    exec(`wget ${baleg} -O ${ranp} && ffmpeg -i ${ranp} -vcodec libwebp -filter:v fps=fps=20 -lossless 1 -loop 0 -preset default -an -vsync 0 -s 512:512 ${rano}`, (err) => {
-                    fs.unlinkSync(ranp)
-                    if (err) return reply('Error Make Sticker')
-		    meme = fs.readFileSync(rano)
-                    megayaa.sendMessage(from, meme, MessageType.sticker, {quoted: lin})
-                    fs.unlinkSync(rano)
-					})
-                    } else {
-                    reply('Gunakan foto!')
+                    baleg = await getBuffer(`https://api.memegen.link/images/custom/${wo1}/${wo2}.png?background=${anu}`)
+                    megayaa.sendMessage(from, baleg, MessageType.image, {quoted: lin})
                     }
                     break	
             case 'ytmp3':
@@ -1488,9 +1478,9 @@ Join Group : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd`
             case 'fakethumb':
                 if (!isOwner && !itsMe) return await reply('This command only for owner or mega')
                 if (!isQuotedImage && !isImage) return await reply('reply image!')
-                media = isQuotedImage ? JSON.parse(JSON.stringify(lin).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lin
-                media = await megayaa.downloadMediaMessage(media)
-                await wa.sendFakeThumb(from, media)
+                media1 = isQuotedImage ? JSON.parse(JSON.stringify(lin).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lin
+                media2 = await megayaa.downloadMediaMessage(media1)
+                await wa.sendFakeThumb(from, media2)
                 break	
             case 'stats':
                 if (!isOwner && !itsMe) return await reply('This command only for owner or mega')
