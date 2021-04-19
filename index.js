@@ -670,7 +670,7 @@ Join Group : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd`
 		for (let i = 0; i < result.length; i++) {
 			pilem += `\n\nTitle : *${result[i].title}*\nLink : *${result[i].link}*`
 		}
-		reply(pilem, result[0])
+		reply(pilem)
                 break	
 	    case 'sfiledl':
                 respo = await axios.get(`https://fzn-gaz.herokuapp.com/api/sfiledl?url=${args.join(" ")}`);
