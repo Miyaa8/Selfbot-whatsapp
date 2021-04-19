@@ -59,7 +59,7 @@ const getJson = help.getJson
 const config = JSON.parse(fs.readFileSync("./config.json"))
 const owner = config.owner
 const mods = config.mods
-const public = config.public
+var public = config.public
 
 // Database
 const imagenye = JSON.parse(fs.readFileSync('./database/image.json'))
