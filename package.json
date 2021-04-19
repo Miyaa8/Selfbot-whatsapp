@@ -1,5 +1,5 @@
 {
-    "name": "Simple-selfbot",
+    "name": "Senpai Bot",
     "version": "1.0.0",
     "description": "modification script LoL-Human",
     "main": "index.js",
@@ -31,7 +31,7 @@
     "keywords": [
         "selfbot"
     ],
-    "author": "Meguyy",
+    "author": "Senpai",
     "bugs": {
         "url": "https://github.com/megaa4282/Simple-selfbotwa/issues"
     },
