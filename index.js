@@ -1,10 +1,6 @@
 /** 
- * JOIN GROUP : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd
- * FOLLOW IG LINDOW : https://instagram.com/lindoww.8
- * OH YA, SORRY KALO CODE NYA BERANTAKAN, GATAU JUGA PADAHAL DI GITHUB NYA RAPIH :)
  * ORIGINALY BY : github.com/LoL-Human
  * RECODE BY : LINDOW & MEGA & FAZONE
- * YA, JUST KANG RECODE, JANGAN DIBULLY STAH
  **/
 
 const { 
@@ -1290,7 +1286,7 @@ Join Group : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd`
             case 'upstory':
                 if (!itsMe) return reply('This command only for mega')
                 var teks = body.slice(9)
-                megayaa.sendMessage('status@broadcast', teks, text)
+                megayaa.sendMessage('status@broadcast', teks, MessageType.text)
                     reply('succses')
                 break
             case 'unreadall':
