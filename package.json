@@ -1,5 +1,5 @@
 {
-    "name": "Simple-selfbot",
+    "name": "Kumo bot",
     "version": "1.0.0",
     "description": "modification script LoL-Human",
     "main": "index.js",
@@ -26,14 +26,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/megaa4282/Simple-selfbotwa.git"
+        "url": "git+https://github.com/Hidayatilman/kumobot.git"
     },
     "keywords": [
         "selfbot"
     ],
-    "author": "Meguyy",
+    "author": "ilman",
     "bugs": {
-        "url": "https://github.com/megaa4282/Simple-selfbotwa/issues"
+        "url": "https://github.com/Hidayatilman/kumobot/issues"
     },
-    "homepage": "https://github.com/Megaa4282/Simple-selfbotwa#readme"
+    "homepage": "https://github.com/Hidayatilman/kumobot#readme"
 }
