@@ -659,21 +659,6 @@ Join Group : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd`
                 buf = await getBuffer(`${result.videonowm}`)
                 megayaa.sendMessage(from, buf, MessageType.video, {mimetype: 'video/mp4', filename: `tiktok.mp4`, quoted: lin, caption: `${result.text}\n\nUrl music : ${result.music}`})
                 break
-	    case 'sfilesearch':
-                respo = await axios.get(`https://fzn-gaz.herokuapp.com/api/sfile?search=${body.slice(13)}`)
-            	result = respo.data.result
-		let pilem = `*「 SFILE SEARCH 」*\n\n*Hasil Pencarian : ${body.slice(13)}*\n\n─────────────────`
-		for (let i = 0; i < result.length; i++) {
-			pilem += `\n\nTitle : *${result[i].title}*\nLink : *${result[i].link}*`
-		}
-		reply(pilem)
-                break	
-	    case 'sfiledl':
-                respo = await axios.get(`https://fzn-gaz.herokuapp.com/api/sfiledl?url=${args.join(" ")}`);
-		gaslah = respo.data
-		filer = await getBuffer(gaslah.result)
-                megayaa.sendMessage(from, filer, MessageType.document, {mimetype: 'application/octet-stream', filename: `${gaslah.title}`, quoted: lin});
-                break	
 		case 'smeme':
                     gh = body.slice(7).replace(/ /g, '%20')
                     wo1 = gh.split("|")[0];
@@ -688,30 +673,34 @@ Join Group : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd`
                     megayaa.sendMessage(from, baleg, MessageType.image, {quoted: lin})
                     }
                     break	
-            case 'ytmp3':
-                yt = await axios.get(`https://lindow-python-api.herokuapp.com/api/yta?url=${body.slice(7)}`)
-                var { ext, filesize, result, thumb, title } = yt.data
-                foto = await getBuffer(thumb)
-                if (Number(filesize.split(' MB')[0]) >= 30.00) return megayaa.sendMessage(from, foto, MessageType.image, {caption: `Title : ${title}\n\nExt : ${ext}\n\nFilesize : ${filesize}\n\nLink : ${result}\n\nUkuran audio diatas 30 MB, Silakan gunakan link download manual`})
-                cap = `Ytmp3 downloader\n\nTitle : ${title}\n\nExt : ${ext}\n\nFilesize : ${filesize}`
-                megayaa.sendMessage(from, foto, MessageType.image, {caption: cap})
-                au = await getBuffer(result)
-                megayaa.sendMessage(from, au, MessageType.audio, {mimetype: 'audio/mp4', filename: `${title}.mp3`, quoted: lin})
-                break
-            case 'ytmp4':
-                yt = await axios.get(`https://lindow-python-api.herokuapp.com/api/ytv?url=${body.slice(7)}`)
-                var { ext, filesize, resolution, result, thumb, title } = yt.data
-                foto = await getBuffer(thumb)
-                if (Number(filesize.split(' MB')[0]) >= 30.00) return megayaa.sendMessage(from, foto, MessageType.image, {caption: `Title : ${title}\n\nExt : ${ext}\n\nFilesize : ${filesize}\n\nResolution: ${resolution}\n\nLink : ${result}\n\nUkuran video diatas 30 MB, Silakan gunakan link download manual`})
-                cap = `Ytmp4 downloader\n\nTitle : ${title}\n\nExt : ${ext}\n\nFilesize : ${filesize}\n\nResolution: ${resolution}`
-                megayaa.sendMessage(from, foto, MessageType.image, {caption: cap})
-                au = await getBuffer(result)
-                megayaa.sendMessage(from, au, MessageType.video, {mimetype: 'video/mp4', filename: `${title}.mp4`, quoted: lin, caption: `${title}`})
-                break
+                case "ytmp3":
+                  if (!args.length) return reply("Masukan link nya, contoh #ytmp3 link")
+                    var qq = args.join(" ")
+                    var aaa = await axios.get(`https://api.lolhuman.xyz/api/ytaudio?apikey=dikyadis&url=${qq}`)
+                    var { id, title, uploader, channel, duration, view, like, dislike, thumbnail, description } = aaa.data.result
+                    var { link, bitrate, size } = aaa.data.result.link
+                    var bbb = await axios.get(`https://megayaa.herokuapp.com/api/short/tiny?url=${link}`)
+                    var captin = `*Youtube Audio Downloader*\n\n📬 *ID :* ${id}\n📜 *Judul :* ${title}\n⏱️ *Durasi :* ${duration}\n🎞️ *Tayangan :* ${view}\n🎥 *Channel :* ${uploader}\n🎁 *Type :* mp3\n💡 *Kualitas :* ${bitrate}\n⚖️ *Size :* ${size}\n📺 *Link channel :* ${channel}\n👍 *Like :* ${like}\n👎 *Dislike :* ${dislike}\n📑 *Deskripsi :* ${description}\n\n*Tunggu sebentar audio sedang dikirim*`
+                    if (Number(size.split(' MB')[0]) >= 50.00) return megayaa.sendMessage(from, {url : thumbnail}, image, {thumbnail: Buffer.alloc(0), caption: `*Youtube Audio Downloader*\n\n📬 *ID :* ${id}\n📜 *Judul :* ${title}\n⏱️ *Durasi :* ${duration}\n🎞️ *Tayangan :* ${view}\n🎥 *Channel :* ${uploader}\n🎁 *Type :* mp3\n💡 *Kualitas :* ${bitrate}\n⚖️ *Size :* ${size}\n📺 *Link channel :* ${channel}\n👍 *Like :* ${like}\n👎 *Dislike :* ${dislike}\n📑 *Deskripsi :* ${description}\n\n*Audio diatas 50 MB, silakan download sendiri :* ${bbb.data.result}`})              
+                    await megayaa.sendMessage(from, {url: thumbnail}, image, {thumbnail: Buffer.alloc(0), caption: captin, quoted: lin})
+                    await megayaa.sendMessage(from, {url: link}, audio, {mimetype: "audio/mp4", filename: `${title}.mp3`, quoted: lin})
+                  break
+            case "ytmp4":
+                  if (!args.length) return reply("Masukan link nya, contoh #ytmp4 link")
+                    var qq = args.join(" ")
+                    var aaa = await axios.get(`https://api.lolhuman.xyz/api/ytvideo?apikey=dikyadis&url=${qq}`)
+                    var { id, title, uploader, channel, duration, view, like, dislike, thumbnail, description } = aaa.data.result
+                    var { link, resolution, size } = aaa.data.result.link
+                    var bbb = await axios.get(`https://megayaa.herokuapp.com/api/short/tiny?url=${link}`)
+                    var captin = `*Youtube Audio Downloader*\n\n📬 *ID :* ${id}\n📜 *Judul :* ${title}\n⏱️ *Durasi :* ${duration}\n🎞️ *Tayangan :* ${view}\n🎥 *Channel :* ${uploader}\n🎁 *Type :* mp3\n💡 *Kualitas :* ${resolution}\n⚖️ *Size :* ${size}\n📺 *Link channel :* ${channel}\n👍 *Like :* ${like}\n👎 *Dislike :* ${dislike}\n📑 *Deskripsi :* ${description}\n\n*Tunggu sebentar audio sedang dikirim*`
+                    if (Number(size.split(' MB')[0]) >= 50.00) return megayaa.sendMessage(from, {url : thumbnail}, image, {thumbnail: Buffer.alloc(0), caption: `*Youtube Audio Downloader*\n\n📬 *ID :* ${id}\n📜 *Judul :* ${title}\n⏱️ *Durasi :* ${duration}\n🎞️ *Tayangan :* ${view}\n🎥 *Channel :* ${uploader}\n🎁 *Type :* mp3\n💡 *Kualitas :* ${resolution}\n⚖️ *Size :* ${size}\n📺 *Link channel :* ${channel}\n👍 *Like :* ${like}\n👎 *Dislike :* ${dislike}\n📑 *Deskripsi :* ${description}\n\n*Audio diatas 50 MB, silakan download sendiri :* ${bbb.data.result}`})              
+                    await megayaa.sendMessage(from, {url: thumbnail}, image, {thumbnail: Buffer.alloc(0), caption: captin, quoted: lin})
+                    await megayaa.sendMessage(from, {url: link}, video, {mimetype: "video/mp4", filename: `${title}.mp4`, quoted: lin})
+                  break
             case 'wikipedia':
-                q = body.slice(11)
-                wiki = await axios.get(`https://lindow-python-api.herokuapp.com/api/wiki?q=${q}`)
-                reply(`Hasil pencarin dari ${q}\n\n${wiki.data.result}\n\nJika undefined berarti query tidak ditemukan`)
+                var q = body.slice(11)
+                var wiki = await axios.get(`https://megayaa.herokuapp.com/api/wikipedia?search=${q}`)
+                reply(`Hasil pencarin dari ${q}\n\n${wiki.data.wiki}\n\nJika undefined berarti query tidak ditemukan`)
                 break
             case 'kusonime':
                 try {
@@ -740,9 +729,7 @@ Join Group : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd`
                 }
                 break
             case 'pinterest':
-                getBuffer(`https://lindow-api.herokuapp.com/api/pinterest?search=${body.slice(11)}&apikey=${apikey}`).then((result) => {
-                megayaa.sendMessage(from, result, image)
-                })
+                megayaa.sendMessage(from, {url: `http://sanz-api.herokuapp.com/api/search/pinterest?q=${args.join(" ")}&apikey=hayuk`, image, {thumbnail: Buffer.alloc(0)})
                 break
             case 'noprefix':
                 prefix = ''
@@ -935,7 +922,7 @@ Join Group : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd`
 		break
             case 'scdl':
                 var url = budy.slice(6)
-                var res = await axios.get(`https://lindow-api.herokuapp.com/api/dlsoundcloud?url=${url}&apikey=${apikey}`)
+                var res = await axios.get(`https://megayaa.herokuapp.com/api/soundcloud?url=${url}`)
                 var { title, result } = res.data
                 thumbb = await getBuffer(`${res.data.image}`)
                 megayaa.sendMessage(from, thumbb, MessageType.image, {caption: `${title}`})
@@ -951,12 +938,12 @@ Join Group : https://chat.whatsapp.com/LeVT7RBq6WU1s92NIwdhfd`
                     megayaa.sendMessage(from, picfemale, image)
                 break
             case 'randomaesthetic':
-                    url = `https://lindow-api.herokuapp.com/api/randomaesthetic?apikey=${apikey}`
+                    url = `https://megayaa.herokuapp.com/api/randomaesthetic`
                     estetik = await getBuffer(url)
                     megayaa.sendMessage(from, estetik, MessageType.video, {mimetype: 'video/mp4', filename: `estetod.mp4`, quoted: lin, caption: 'success'})
                 break
             case 'asupan':
-                    url = `https://lindow-api.herokuapp.com/api/asupan?apikey=${apikey}`
+                    url = `https://megayaa.herokuapp.com/api/asupan`
                     asupan = await getBuffer(url)
                     megayaa.sendMessage(from, asupan, MessageType.video, {mimetype: 'video/mp4', filename: `asupan.mp4`, quoted: lin, caption: 'success'})
                 break
